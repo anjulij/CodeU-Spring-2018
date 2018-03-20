@@ -29,6 +29,7 @@
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+    <a href="/teamname">The Unnamed Ones</a>
     <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
   </nav>
