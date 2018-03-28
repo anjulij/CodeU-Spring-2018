@@ -23,10 +23,12 @@ public class RegisterServlet extends HttpServlet {
      */
     private final UserStore userStore;
 
-    public RegisterServlet(UserStore userStore){
+    public RegisterServlet() {
+        this(UserStore.getInstance());
+    }
+    public RegisterServlet(UserStore userStore) {
         this.userStore = userStore;
     }
-
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
