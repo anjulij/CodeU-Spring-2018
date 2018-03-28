@@ -27,7 +27,7 @@
 
             <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
 
-            <$ }else{ %>
+            <% }else{ %>
                 <a href="/login">Login</a>
             <% } %>
     </nav>
