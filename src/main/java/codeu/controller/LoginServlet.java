@@ -70,21 +70,7 @@ public class LoginServlet extends HttpServlet {
      String password = request.getParameter("password");
 
     // Remove the logic that checks for non-alpha-numeric characters, since that's handled during registration.
-//     if (!username.matches("[\\w*\\s*]*")) {
-//       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
-//       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-//       return;
-//     }
 
-//     if (!userStore.isUserRegistered(username)) {
-//       User user = new User(UUID.randomUUID(), username, Instant.now());
-//       userStore.addUser(user);
-//     }
-
-//     request.getSession().setAttribute("user", username);
-//     response.sendRedirect("/conversations");
-//   }
-// }
     // check to see if the user is regitered
     if (userStore.isUserRegistered(username)) {
      User user = userStore.getUser(username);
