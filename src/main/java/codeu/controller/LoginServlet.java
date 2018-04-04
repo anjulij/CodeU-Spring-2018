@@ -66,21 +66,26 @@ public class LoginServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String username = request.getParameter("username");
+    // getting the password
+     String password = request.getParameter("password");
 
-    if (!username.matches("[\\w*\\s*]*")) {
-      request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
-      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-      return;
-    }
+    // Remove the logic that checks for non-alpha-numeric characters, since that's handled during registration.
 
-    if (!userStore.isUserRegistered(username)) {
-      // TODO: add password
-
-      User user = new User(UUID.randomUUID(), username, null, Instant.now());
-      userStore.addUser(user);
-    }
-
-    request.getSession().setAttribute("user", username);
-    response.sendRedirect("/conversations");
-  }
-}
+    // check to see if the user is regitered
+    if (userStore.isUserRegistered(username)) {
+     User user = userStore.getUser(username);
+      // if they enter the correct password
+      if(password.equals(user.getPassword())) {
+       request.getSession().setAttribute("user", username);
+       response.sendRedirect("/conversations");
+     }
+     else {
+       request.setAttribute("error", "Invalid password.");
+       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+     }
+   }
+   else {
+     request.setAttribute("error", "That username was not found.");
+     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+   }
+ }
