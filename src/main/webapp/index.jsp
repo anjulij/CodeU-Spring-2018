@@ -29,8 +29,8 @@
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
-    <a href="/activity">Activity</a> <!-- Changed  -->
-    <a href="/conversations">Conversations</a> <!-- Changed  -->
+    <a href="/activity">Activity</a> 
+    <a href="/conversations">Conversations</a> 
     <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
   </nav>
