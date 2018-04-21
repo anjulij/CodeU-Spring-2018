@@ -29,6 +29,6 @@ public class ActivityServletTest {
   public void testDoGet() throws IOException, ServletException {
 	  activityServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockPrintWriter).println("<h1>RegisterServlet GET request.</h1>");
+    Mockito.verify(mockPrintWriter).println("<h1>ActivityServlet GET request.</h1>");
   }
 }
