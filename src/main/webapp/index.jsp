@@ -44,7 +44,7 @@
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
-        <li>You can view today's activity in the <a href="/activity">activity</a> page.</li>  <!-- Changed  -->
+        <li>You can view today's activity in the <a href="/activity">activity</a> page.</li> 
         <li>Go to the <a href="/conversations">conversations</a> page to
             create or join a conversation.</li>
         <li>View the <a href="/about.jsp">about</a> page to learn more about the
