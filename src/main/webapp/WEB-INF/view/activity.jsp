@@ -15,12 +15,13 @@
 --%>
 
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Activity</title>
-  </head>
+<html>
+<%@ include file = "../../header.jsp" %>
   <body>
-    
+    <div id="container">
+      <h1>Activity</h1>
+      <p>Here's everything that's happened on the site so far!</p>
+      <div style="height:600px;width:750px;border:5px solid #ccc;overflow:auto;">
+      </div>
   </body>
 </html>

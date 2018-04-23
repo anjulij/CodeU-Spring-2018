@@ -15,26 +15,8 @@
 --%>
 <!DOCTYPE html>
 <html>
-<head>
-  <title>The Unnamed Ones&#39; CodeU Chat App</title>
-  <link rel="stylesheet" href="/css/main.css">
-</head>
+<%@ include file = "header.jsp" %>
 <body>
-
-  <nav>
-    <a id="navTitle" href="/">The Unnamed Ones&#39; CodeU Chat App</a>
-    
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else{ %>
-      <a href="/login">Login</a>
-    <% } %>
-    <a href="/activity">Activity</a> <!-- Changed  -->
-    <a href="/conversations">Conversations</a> <!-- Changed  -->
-    <a href="/about.jsp">About</a>
-    <a href="/testdata">Load Test Data</a>
-  </nav>
-
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
