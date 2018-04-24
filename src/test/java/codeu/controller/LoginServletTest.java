@@ -14,8 +14,7 @@
 
 package codeu.controller;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
@@ -29,30 +28,28 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 public class LoginServletTest {
 
   private LoginServlet loginServlet;
-  private HttpServletRequest mockRequest;
-  private HttpServletResponse mockResponse;
-  private HttpSession mockSession;
-  private RequestDispatcher mockRequestDispatcher;
-  private UserStore mockUserStore;
-  private User mockUser;
+
+  @Mock private HttpServletRequest mockRequest;
+  @Mock private HttpServletResponse mockResponse;
+  @Mock private HttpSession mockSession;
+  @Mock private RequestDispatcher mockRequestDispatcher;
+  @Mock private UserStore mockUserStore;
+  @Mock private User mockUser;
 
   @Before
   public void setup() {
-    loginServlet = new LoginServlet();
-    mockRequest = Mockito.mock(HttpServletRequest.class);
-    mockResponse = Mockito.mock(HttpServletResponse.class);
-    mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-    mockUserStore = Mockito.mock(UserStore.class);
-    mockSession = Mockito.mock(HttpSession.class);
-    mockUser = Mockito.mock(User.class);
-    when(mockRequest.getSession()).thenReturn(mockSession);
+    MockitoAnnotations.initMocks(this);
 
+    loginServlet = new LoginServlet();
     loginServlet.setUserStore(mockUserStore);
+    when(mockRequest.getSession()).thenReturn(mockSession);
     when(mockRequest.getRequestDispatcher("/WEB-INF/view/login.jsp"))
         .thenReturn(mockRequestDispatcher);
   }
