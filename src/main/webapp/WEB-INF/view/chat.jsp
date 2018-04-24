@@ -24,8 +24,9 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
 <!DOCTYPE html>
 <html>
-<%@ include file = "../../header.jsp" %>
 <head>
+<title>The Unnamed Ones&#39; CodeU Chat App</title>
+  <link rel="stylesheet" href="/css/main.css">
   <style>
     #chat {
       background-color: white;
@@ -43,6 +44,19 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   </script>
 </head>
 <body onload="scrollChat()">
+  <nav>
+    <a id="navTitle" href="/">The Unnamed Ones&#39; CodeU Chat App</a>
+    
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+    <% } else{ %>
+      <a href="/login">Login</a>
+    <% } %>
+    <a href="/activity">Activity</a> 
+    <a href="/conversations">Conversations</a> 
+    <a href="/about.jsp">About</a>
+    <a href="/testdata">Load Test Data</a>
+  </nav>
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
