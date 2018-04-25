@@ -30,6 +30,19 @@ public class LoginServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
+  private static final String SELF_URL = "/WEB-INF/view/login.jsp";
+
+  private static void redirectToSelf(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    request.getRequestDispatcher(SELF_URL).forward(request, response);
+  }
+
+  private static void setErrorAndRedirect(HttpServletRequest request, HttpServletResponse response, String error)
+      throws IOException, ServletException {
+    request.setAttribute("error", error);
+    redirectToSelf(request, response);
+  }
+
   /**
    * Set up state for handling login-related requests. This method is only called when running in a
    * server, not when running in a test.
@@ -55,7 +68,7 @@ public class LoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+    redirectToSelf(request, response);
   }
 
   /**
@@ -66,26 +79,21 @@ public class LoginServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String username = request.getParameter("username");
-    // getting the password
-     String password = request.getParameter("password");
-
-    // Remove the logic that checks for non-alpha-numeric characters, since that's handled during registration.
-
-    // check to see if the user is regitered
-    if (userStore.isUserRegistered(username)) {
-     User user = userStore.getUser(username);
-      // if they enter the correct password
+    String password = request.getParameter("password");
+    if (username == null || password == null) {
+      setErrorAndRedirect(request, response, "Missing username or password.");
+    } else if (userStore.isUserRegistered(username)) {
+      User user = userStore.getUser(username);
+      // User has entered the correct password.
+      // TODO(someone): add encryption to this, because this is terrible.
       if(password.equals(user.getPassword())) {
-       request.getSession().setAttribute("user", username);
-       response.sendRedirect("/conversations");
-     }
-     else {
-       request.setAttribute("error", "Invalid password.");
-       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-     }
-   }
-   else {
-     request.setAttribute("error", "That username was not found.");
-     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-   }
- }
+        request.getSession().setAttribute("user", username);
+        response.sendRedirect("/conversations");
+      } else {
+	setErrorAndRedirect(request, response, "Invalid password.");
+      }
+    } else {
+      setErrorAndRedirect(request, response, "That username was not found.");   
+    }
+  }
+}
