@@ -35,5 +35,9 @@
      <button type="submit">Login</button>
    </form>
  </div>
+
+ <div>
+   Don't have a login? <a href="/register">Register</a>!
+ </div>
 </body>
 </html>
