@@ -16,6 +16,7 @@ package codeu.model.store.basic;
 
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -120,5 +121,9 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  public ImmutableList<User> getAllUsers() {
+    return ImmutableList.<User>copyOf(this.users);
   }
 }
