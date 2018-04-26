@@ -74,7 +74,7 @@ public class AdminServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = (String) request.getSession().getAttribute("user");
     if (username == null) {
-      // user is not logged in, don't let them create a conversation
+      // user is not logged in, so force them into that first.
       response.sendRedirect(LOGIN_URL);
       return false;
     } else if (!ADMIN_USER.equals(username)) {
