@@ -99,8 +99,12 @@ public class UserStore {
     return null;
   }
 
-  /** Add a new user to the current set of users known to the application. */
+  /** Add/replace a new user to the current set of users known to the application. */
   public void addUser(User user) {
+    User original = getUser(user.getId());
+    if (original != null) {
+      users.remove(original);
+    }
     users.add(user);
     persistentStorageAgent.writeThrough(user);
   }

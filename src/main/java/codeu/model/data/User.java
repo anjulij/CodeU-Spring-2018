@@ -23,6 +23,7 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
+  private final boolean blocked;
 
   /**
    * Constructs a new User.
@@ -33,10 +34,40 @@ public class User {
    * @param creation the creation time of this User
    */
   public User(UUID id, String name, String password, Instant creation) {
+    this(id, name, password, creation, false);
+  }
+
+  /**
+   * Constructs a new User.
+   *
+   * @param id the ID of this User
+   * @param name the username of this User
+   * @param password the password of this User
+   * @param creation the creation time of this User
+   * @param blocked whether or not the user is blocked
+   */
+  public User(UUID id, String name, String password, Instant creation, boolean blocked) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.creation = creation;
+    this.blocked = blocked;
+  }
+
+  /** Returns a new user that is the same as the old user, but is blocked. */
+  public static User blockUser(User original) {
+    return new User(original.id, original.name, original.password, original.creation, true);
+  }
+
+  /** Returns a new user that is the same as the old user, but is not blocked. */
+  public static User unblockUser(User original) {
+    return new User(original.id, original.name, original.password, original.creation, false);
+  }
+
+
+  /** Edits the password for a particular user, returns a new user. */
+  public static User resetPassword(User original, String password) {
+    return new User(original.id, original.name, password, original.creation, original.blocked);
   }
 
   /** Returns the ID of this User. */
@@ -57,5 +88,9 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  public boolean isBlocked() {
+    return blocked;
   }
 }

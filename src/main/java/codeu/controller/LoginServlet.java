@@ -87,8 +87,13 @@ public class LoginServlet extends HttpServlet {
       // User has entered the correct password.
       // TODO(someone): add encryption to this, because this is terrible.
       if(password.equals(user.getPassword())) {
-        request.getSession().setAttribute("user", username);
-        response.sendRedirect("/conversations");
+        if (user.isBlocked()) {
+	  setErrorAndRedirect(request, response, "You have been blocked. Bummer.");
+	} else {
+          // At last, success!
+          request.getSession().setAttribute("user", username);
+          response.sendRedirect("/conversations");
+	}
       } else {
 	setErrorAndRedirect(request, response, "Invalid password.");
       }

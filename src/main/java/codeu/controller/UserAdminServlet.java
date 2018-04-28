@@ -42,9 +42,37 @@ public class UserAdminServlet extends BaseAdminServlet {
     request.getRequestDispatcher(SELF_JSP).forward(request, response);
   }
 
+  /**
+   * Performs editing of a user.
+   */
   @Override
   protected void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    // Do nothing for now.
+    String username = request.getParameter("username"); 
+    User userToBeEdited = userStore.getUser(username);
+    // TODO(ncjones): there should be better error checking here.
+    if (userToBeEdited != null) {
+      String action = request.getParameter("action");
+      User editedUser;
+      if ("Block".equals(action)) {
+        editedUser = User.blockUser(userToBeEdited);
+        userStore.addUser(editedUser);
+      } else if ("Unblock".equals(action)) {
+        editedUser = User.unblockUser(userToBeEdited);
+        userStore.addUser(editedUser);
+      } else if ("Reset".equals(action)) {
+        String newPassword = request.getParameter("new_password");
+	if (newPassword == null) {
+          newPassword = "password";
+	}
+        editedUser = User.resetPassword(userToBeEdited, newPassword);
+        userStore.addUser(editedUser);
+      } else {
+        // Unsupported command; don't edit anything.
+        editedUser = userToBeEdited;
+      }
+      request.setAttribute("userToBeShown", editedUser);
+    }
+    request.getRequestDispatcher(SELF_JSP).forward(request, response);
   }
 }

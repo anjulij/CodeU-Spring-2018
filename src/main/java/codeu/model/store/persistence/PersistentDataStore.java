@@ -66,8 +66,11 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+	// Note that any users created prior to this point will not be blocked, because
+	// this fails open.
+	boolean blocked = Boolean.parseBoolean((String) entity.getProperty("blocked"));
 
-        User user = new User(uuid, userName, password, creationTime);
+        User user = new User(uuid, userName, password, creationTime, blocked);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -154,6 +157,7 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("blocked", Boolean.toString(user.isBlocked()));
     datastore.put(userEntity);
   }
 

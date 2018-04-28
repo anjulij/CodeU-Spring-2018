@@ -104,4 +104,20 @@ public class LoginServletTest {
     verify(mockSession).setAttribute("user", "test username");
     verify(mockResponse).sendRedirect("/conversations");
   }
+
+  @Test
+  public void testDoPost_blockedUser() throws IOException, ServletException {
+    when(mockRequest.getParameter("username")).thenReturn("test username");
+    when(mockRequest.getParameter("password")).thenReturn("some password");
+    when(mockUser.getPassword()).thenReturn("some password");
+    when(mockUser.isBlocked()).thenReturn(true);
+    when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+    when(mockUserStore.getUser("test username")).thenReturn(mockUser);
+    
+    loginServlet.doPost(mockRequest, mockResponse);
+
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    verify(mockRequest).setAttribute("error", "You have been blocked. Bummer.");
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }

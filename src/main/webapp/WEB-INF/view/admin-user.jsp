@@ -37,9 +37,15 @@
     %>
       <form method="POST">
         <ul class="mdl-list">
-          <li>User: <%= user.getName() %> | <input type="submit" value="Block"> | <input type="submit" value="Unblock"></li> 
+          <li>User: <%= user.getName() %> |
+            <% if (user.isBlocked()) { %>
+              <input type="submit" name="action" value="Unblock">
+            <% } else { %>
+              <input type="submit" name="action" value="Block">
+            <% } %>
+          </li> 
           <li>ID: <%= user.getId() %></li>
-          <li>Password: <input type="submit" value="reset"></li>
+	  <li>Reset password: <input type="text" name="new_password"><input type="submit" name="action" value="Reset"></li>
         </ul>
       </form>
     <%

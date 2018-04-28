@@ -74,4 +74,56 @@ public class UserAdminServletTest {
     verify(mockRequest).setAttribute("userToBeShown", mockUser);
     verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+
+  @Test
+  public void testDoPost_block() throws IOException, ServletException {
+    when(mockRequest.getParameter("username")).thenReturn("foo");
+    when(mockRequest.getParameter("action")).thenReturn("Block");
+    when(mockUserStore.getUser("foo")).thenReturn(mockUser);
+    when(mockSession.getAttribute("user")).thenReturn("admin");
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    verify(mockUserStore).addUser(any());
+  }
+
+  @Test
+  public void testDoPost_unblock() throws IOException, ServletException {
+    when(mockRequest.getParameter("username")).thenReturn("foo");
+    when(mockRequest.getParameter("action")).thenReturn("Unblock");
+    when(mockUserStore.getUser("foo")).thenReturn(mockUser);
+    when(mockSession.getAttribute("user")).thenReturn("admin");
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    verify(mockUserStore).addUser(any());
+  }
+
+  @Test
+  public void testDoPost_reset() throws IOException, ServletException {
+    when(mockRequest.getParameter("username")).thenReturn("foo");
+    when(mockRequest.getParameter("action")).thenReturn("Reset");
+    when(mockUserStore.getUser("foo")).thenReturn(mockUser);
+    when(mockSession.getAttribute("user")).thenReturn("admin");
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    verify(mockUserStore).addUser(any());
+  }
+
+  @Test
+  public void testDoPost_notACommand() throws IOException, ServletException {
+    when(mockRequest.getParameter("username")).thenReturn("foo");
+    when(mockRequest.getParameter("action")).thenReturn("BLAAAH");
+    when(mockUserStore.getUser("foo")).thenReturn(mockUser);
+    when(mockSession.getAttribute("user")).thenReturn("admin");
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    verify(mockUserStore, never()).addUser(any());
+  }
 }
