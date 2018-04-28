@@ -122,7 +122,7 @@ public class ChatServlet extends HttpServlet {
     }
 
     User user = userStore.getUser(username);
-    if (user == null) {
+    if (user == null || user.isBlocked()) {
       // user was not found, don't let them add a message
       response.sendRedirect("/login");
       return;
@@ -132,8 +132,8 @@ public class ChatServlet extends HttpServlet {
     String conversationTitle = requestUrl.substring("/chat/".length());
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
-    if (conversation == null) {
-      // couldn't find conversation, redirect to conversation list
+    if (conversation == null || conversation.isMuted()) {
+      // couldn't find conversation, or the conversation can't be shown: redirect to conversation list
       response.sendRedirect("/conversations");
       return;
     }

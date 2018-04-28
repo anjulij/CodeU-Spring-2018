@@ -92,7 +92,7 @@ public class LoginServlet extends HttpServlet {
 	} else {
           // At last, success!
           request.getSession().setAttribute("user", username);
-          response.sendRedirect("/conversations");
+          response.sendRedirect("admin".equals(username) ? "/admin" : "/conversations");
 	}
       } else {
 	setErrorAndRedirect(request, response, "Invalid password.");

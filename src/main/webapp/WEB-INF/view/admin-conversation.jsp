@@ -42,7 +42,18 @@
           <li>Title: <%= conversation.getTitle() %></li>
           <li>ID: <%= conversation.getId() %></li>
 	  <li>Author: <a href="/admin/user?username=<%= author.getName() %>"><%= author.getName() %></a></li>
-	  <li><input type="submit" value="Mute">|<input type="submit" value="Unmute"></li>
+	  <li><%
+                if (conversation.isMuted()) {
+              %>
+	          <input type="submit" name="action" value="Unmute">
+              <%
+	        } else {
+              %>
+                  <input type="submit" name="action" value="Mute">
+             <%
+                }
+             %>
+	  </li>
         </ul>
       </form>
     <%

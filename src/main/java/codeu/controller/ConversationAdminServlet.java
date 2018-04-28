@@ -47,6 +47,21 @@ public class ConversationAdminServlet extends BaseAdminServlet {
   @Override
   protected void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    // Do nothing for now.
+    String conversation = request.getParameter("conversation"); 
+    Conversation originalConversation = conversationStore.getConversationWithTitle(conversation);
+    Conversation editedConversation;
+    String action = request.getParameter("action");    
+    if ("Mute".equals(action)) {
+      editedConversation = Conversation.muteConversation(originalConversation);
+      conversationStore.addConversation(editedConversation);
+    } else if ("Unmute".equals(action)) {
+      editedConversation = Conversation.unmuteConversation(originalConversation);
+      conversationStore.addConversation(editedConversation);
+    } else {
+      editedConversation = originalConversation;
+    }
+    request.setAttribute("author", userStore.getUser(editedConversation.getOwnerId()));
+    request.setAttribute("conversationToBeShown", editedConversation);
+    request.getRequestDispatcher(SELF_JSP).forward(request, response);
   }
 }
