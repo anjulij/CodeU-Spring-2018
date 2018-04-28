@@ -40,7 +40,7 @@
       for(Conversation conversation : conversations) {
     %>
       <li>
-        <a href="/admin/conversation?conversation_id=<%= conversation.getId() %>">
+        <a href="/admin/conversation?conversation=<%= conversation.getTitle() %>">
           <%= conversation.getTitle() %>
 	</a>
       </li>
@@ -66,7 +66,7 @@
       for (User user : users) {
     %>
       <li>
-        <a href="/admin/user?user_id=<%= user.getId() %>">
+        <a href="/admin/user?username=<%= user.getName() %>">
           <%= user.getName() %>
 	</a>
       </li>

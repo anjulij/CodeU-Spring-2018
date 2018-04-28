@@ -27,18 +27,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet class responsible for the Admin page. */
-public class AdminServlet extends HttpServlet {
+/** Absract class responsible for common functionality in all Admin pages. */
+public abstract class BaseAdminServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
-  private UserStore userStore;
+  protected UserStore userStore;
 
   /** Store class that gives access to Conversations. */
-  private ConversationStore conversationStore;
+  protected ConversationStore conversationStore;
 
   private static final String LOGIN_URL = "/login";
   private static final String CONVERSATION_URL = "/conversations";
-  private static final String SELF_JSP = "/WEB-INF/view/admin.jsp";
 
   /** Special magic username that allows access. */
   private static final String ADMIN_USER = "admin";
@@ -70,7 +69,7 @@ public class AdminServlet extends HttpServlet {
     this.conversationStore = conversationStore;
   }
 
-  private boolean userIsValid(HttpServletRequest request, HttpServletResponse response)
+  protected boolean userIsValid(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String username = (String) request.getSession().getAttribute("user");
     if (username == null) {
@@ -86,6 +85,18 @@ public class AdminServlet extends HttpServlet {
   }
 
   /**
+   * Functionality that an implementation class provides to fulfill a GET command.
+   */
+  protected abstract void onValidatedGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException;
+
+  /**
+   * Functionality that an implementation class provides to fulfill a POST command.
+   */
+  protected abstract void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException;
+
+  /**
    * This function fires when a user navigates to the admin page. It gets all of the
    * conversations from the model and forwards to admin.jsp for rendering the list.
    * Note that this needs to gate on user.
@@ -94,11 +105,14 @@ public class AdminServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     if (userIsValid(request, response)) {
+      onValidatedGet(request, response);
+	    /*
       List<Conversation> conversations = conversationStore.getAllConversations();
       List<User> users = userStore.getAllUsers();
       request.setAttribute("conversations", conversations);
       request.setAttribute("users", users);
       request.getRequestDispatcher(SELF_JSP).forward(request, response);
+      */
     }
   }
 
@@ -110,6 +124,8 @@ public class AdminServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-      // do nothing
+    if (userIsValid(request, response)) {
+      onValidatedPost(request, response);
+    }
   }
 }

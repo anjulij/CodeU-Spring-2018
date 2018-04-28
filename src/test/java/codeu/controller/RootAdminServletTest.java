@@ -38,9 +38,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Mock;
 
-public class AdminServletTest {
+public class RootAdminServletTest {
 
-  private AdminServlet adminServlet;
+  private RootAdminServlet adminServlet;
 
   @Mock private HttpServletRequest mockRequest;
   @Mock private HttpSession mockSession;
@@ -51,7 +51,7 @@ public class AdminServletTest {
 
   @Before
   public void setup() {
-    adminServlet = new AdminServlet();
+    adminServlet = new RootAdminServlet();
 
     MockitoAnnotations.initMocks(this);
     when(mockRequest.getSession()).thenReturn(mockSession);
