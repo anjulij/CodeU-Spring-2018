@@ -106,13 +106,6 @@ public abstract class BaseAdminServlet extends HttpServlet {
       throws IOException, ServletException {
     if (userIsValid(request, response)) {
       onValidatedGet(request, response);
-	    /*
-      List<Conversation> conversations = conversationStore.getAllConversations();
-      List<User> users = userStore.getAllUsers();
-      request.setAttribute("conversations", conversations);
-      request.setAttribute("users", users);
-      request.getRequestDispatcher(SELF_JSP).forward(request, response);
-      */
     }
   }
 
