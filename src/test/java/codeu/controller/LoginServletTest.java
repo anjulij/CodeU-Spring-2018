@@ -31,6 +31,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginServletTest {
 
@@ -94,7 +95,7 @@ public class LoginServletTest {
   public void testDoPost_ExistingUser() throws IOException, ServletException {
     when(mockRequest.getParameter("username")).thenReturn("test username");
     when(mockRequest.getParameter("password")).thenReturn("some password");
-    when(mockUser.getPassword()).thenReturn("some password");
+    when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("some password", BCrypt.gensalt()));
     when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     when(mockUserStore.getUser("test username")).thenReturn(mockUser);
 
@@ -109,7 +110,7 @@ public class LoginServletTest {
   public void testDoPost_blockedUser() throws IOException, ServletException {
     when(mockRequest.getParameter("username")).thenReturn("test username");
     when(mockRequest.getParameter("password")).thenReturn("some password");
-    when(mockUser.getPassword()).thenReturn("some password");
+    when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("some password", BCrypt.gensalt()));
     when(mockUser.isBlocked()).thenReturn(true);
     when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     when(mockUserStore.getUser("test username")).thenReturn(mockUser);
