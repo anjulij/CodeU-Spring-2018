@@ -39,12 +39,18 @@ public class PersistentDataStoreTest {
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
+    UUID idTwo = UUID.randomUUID();
+    if (idTwo.toString().compareTo(idOne.toString()) < 0) {
+      UUID temp = idTwo;
+      idTwo = idOne;
+      idOne = temp;
+    }
+
     String nameOne = "test_username_one";
     String passwordOne = "password_one";
     Instant creationOne = Instant.ofEpochMilli(1000);
     User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne);
 
-    UUID idTwo = UUID.randomUUID();
     String nameTwo = "test_username_two";
     String passwordTwo = "password_two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
@@ -74,12 +80,17 @@ public class PersistentDataStoreTest {
   @Test
   public void testSaveAndLoadConversations() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
+    UUID idTwo = UUID.randomUUID();
+    if (idTwo.toString().compareTo(idOne.toString()) < 0) {
+      UUID temp = idTwo;
+      idTwo = idOne;
+      idOne = temp;
+    }
     UUID ownerOne = UUID.randomUUID();
     String titleOne = "Test_Title";
     Instant creationOne = Instant.ofEpochMilli(1000);
     Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne);
 
-    UUID idTwo = UUID.randomUUID();
     UUID ownerTwo = UUID.randomUUID();
     String titleTwo = "Test_Title_Two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
@@ -109,6 +120,12 @@ public class PersistentDataStoreTest {
   @Test
   public void testSaveAndLoadMessages() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
+    UUID idTwo = UUID.randomUUID();
+    if (idTwo.toString().compareTo(idOne.toString()) < 0) {
+      UUID temp = idTwo;
+      idTwo = idOne;
+      idOne = temp;
+    }
     UUID conversationOne = UUID.randomUUID();
     UUID authorOne = UUID.randomUUID();
     String contentOne = "test content one";
@@ -116,7 +133,6 @@ public class PersistentDataStoreTest {
     Message inputMessageOne =
         new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
 
-    UUID idTwo = UUID.randomUUID();
     UUID conversationTwo = UUID.randomUUID();
     UUID authorTwo = UUID.randomUUID();
     String contentTwo = "test content one";
