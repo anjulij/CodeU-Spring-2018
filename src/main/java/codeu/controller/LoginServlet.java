@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 /** Servlet class responsible for the login page. */
 public class LoginServlet extends HttpServlet {
 
@@ -84,9 +86,10 @@ public class LoginServlet extends HttpServlet {
       setErrorAndRedirect(request, response, "Missing username or password.");
     } else if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
+      
       // User has entered the correct password.
       // TODO(someone): add encryption to this, because this is terrible.
-      if(password.equals(user.getPassword())) {
+      if(BCrypt.checkpw(password, user.getPassword())) {
         request.getSession().setAttribute("user", username);
         response.sendRedirect("/conversations");
       } else {
