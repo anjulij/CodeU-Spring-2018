@@ -28,7 +28,6 @@ public class UserTest {
     String name = "test_username";
     Instant creation = Instant.now();
     String password = "password";
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
     User user = new User(id, name, hashedPassword, creation);
 
