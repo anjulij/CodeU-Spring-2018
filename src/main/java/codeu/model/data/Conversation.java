@@ -26,6 +26,24 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  public final boolean muted;
+
+  /**
+   * Constructs a new Conversation.
+   *
+   * @param id the ID of this Conversation
+   * @param owner the ID of the User who created this Conversation
+   * @param title the title of this Conversation
+   * @param creation the creation time of this Conversation
+   * @param muted whether or not the conversation can continue
+   */
+  public Conversation(UUID id, UUID owner, String title, Instant creation, boolean muted) {
+    this.id = id;
+    this.owner = owner;
+    this.creation = creation;
+    this.title = title;
+    this.muted = muted ;
+  }
 
   /**
    * Constructs a new Conversation.
@@ -36,10 +54,17 @@ public class Conversation {
    * @param creation the creation time of this Conversation
    */
   public Conversation(UUID id, UUID owner, String title, Instant creation) {
-    this.id = id;
-    this.owner = owner;
-    this.creation = creation;
-    this.title = title;
+    this(id, owner, title, creation, false);
+  }
+
+  /** Mute the original conversation; this requires an update to datastore. */
+  public static Conversation muteConversation(Conversation original) {
+    return new Conversation(original.id, original.owner, original.title, original.creation, true);
+  }
+
+  /** Unmute the original conversation; this requires an update to datastore. */
+  public static Conversation unmuteConversation(Conversation original) {
+    return new Conversation(original.id, original.owner, original.title, original.creation, false);
   }
 
   /** Returns the ID of this Conversation. */
@@ -60,5 +85,10 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns whether this Conversation is muted. */
+  public boolean isMuted() {
+    return muted;
   }
 }

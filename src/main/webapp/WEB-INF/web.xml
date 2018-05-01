@@ -86,4 +86,34 @@
     <url-pattern>/register</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>RootAdminServlet</servlet-name>
+    <servlet-class>codeu.controller.RootAdminServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>RootAdminServlet</servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UserAdminServlet</servlet-name>
+    <servlet-class>codeu.controller.UserAdminServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>UserAdminServlet</servlet-name>
+    <url-pattern>/admin/user</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ConversationAdminServlet</servlet-name>
+    <servlet-class>codeu.controller.ConversationAdminServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ConversationAdminServlet</servlet-name>
+    <url-pattern>/admin/conversation</url-pattern>
+  </servlet-mapping>
+
 </web-app>

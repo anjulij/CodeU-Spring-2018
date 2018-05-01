@@ -66,21 +66,27 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <div id="chat">
       <ul>
-    <%
-      for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
-    %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
-    <%
-      }
-    %>
+        <%
+          if (!conversation.isMuted()) {
+            for (Message message : messages) {
+              String author = UserStore.getInstance()
+                .getUser(message.getAuthorId()).getName();
+            %>
+              <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+            <%
+            }
+          } else {
+            %>
+	      <li>This conversation is muted.</li>
+	    <%
+	  }
+	%>
       </ul>
     </div>
 
     <hr/>
 
-    <% if (request.getSession().getAttribute("user") != null) { %>
+    <% if (request.getSession().getAttribute("user") != null && !conversation.isMuted()) { %>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>

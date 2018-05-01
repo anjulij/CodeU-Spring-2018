@@ -90,8 +90,13 @@ public class LoginServlet extends HttpServlet {
       // User has entered the correct password.
       // TODO(someone): add encryption to this, because this is terrible.
       if(BCrypt.checkpw(password, user.getPassword())) {
-        request.getSession().setAttribute("user", username);
-        response.sendRedirect("/conversations");
+        if (user.isBlocked()) {
+	  setErrorAndRedirect(request, response, "You have been blocked. Bummer.");
+	} else {
+          // At last, success!
+          request.getSession().setAttribute("user", username);
+          response.sendRedirect("admin".equals(username) ? "/admin" : "/conversations");
+	}
       } else {
 	setErrorAndRedirect(request, response, "Invalid password.");
       }

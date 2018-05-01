@@ -22,6 +22,7 @@ public class UserStoreTest {
       new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
       new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000));
+  private final User BLOCKED_USER_ONE = User.blockUser(USER_ONE);
 
   @Before
   public void setup() {
@@ -33,6 +34,18 @@ public class UserStoreTest {
     userList.add(USER_TWO);
     userList.add(USER_THREE);
     userStore.setUsers(userList);
+  }
+
+  @Test
+  public void testAddUser_editExistingUser() {
+    Assert.assertEquals(3, userStore.getAllUsers().size());
+    userStore.addUser(BLOCKED_USER_ONE);
+    // Very important this doesn't go up by one, because that would leave the old
+    // user still in place
+    Assert.assertEquals(3, userStore.getAllUsers().size());
+    Mockito.verify(mockPersistentStorageAgent).writeThrough(BLOCKED_USER_ONE);
+    User storedUser = userStore.getUser(BLOCKED_USER_ONE.getId());
+    assertEquals(BLOCKED_USER_ONE, storedUser);
   }
 
   @Test
@@ -89,5 +102,6 @@ public class UserStoreTest {
     Assert.assertEquals(expectedUser.getName(), actualUser.getName());
     Assert.assertEquals(expectedUser.getPassword(), actualUser.getPassword());
     Assert.assertEquals(expectedUser.getCreationTime(), actualUser.getCreationTime());
+    Assert.assertEquals(expectedUser.isBlocked(), actualUser.isBlocked());
   }
 }

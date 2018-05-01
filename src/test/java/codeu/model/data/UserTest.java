@@ -35,5 +35,14 @@ public class UserTest {
     Assert.assertEquals(name, user.getName());
     Assert.assertEquals(password, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
+    Assert.assertFalse(user.isBlocked());
+
+    user = new User(id, name, password, creation, true);
+
+    Assert.assertEquals(id, user.getId());
+    Assert.assertEquals(name, user.getName());
+    Assert.assertEquals(password, user.getPassword());
+    Assert.assertEquals(creation, user.getCreationTime());
+    Assert.assertTrue(user.isBlocked());
   }
 }
