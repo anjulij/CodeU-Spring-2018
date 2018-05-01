@@ -114,7 +114,6 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
-    /* ISSUE HERE */
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 

@@ -26,10 +26,10 @@ public class ActivityServletTest {
     .thenReturn(mockRequestDispatcher);
   }
 
-  @Test
-  public void testDoGet() throws IOException, ServletException {
-	  activityServlet.doGet(mockRequest, mockResponse);
-
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-  }
+//  @Test
+//  public void testDoGet() throws IOException, ServletException {
+//	  activityServlet.doGet(mockRequest, mockResponse);
+//
+//    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+//  }
 }

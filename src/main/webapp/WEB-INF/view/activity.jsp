@@ -13,15 +13,57 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.time.format.FormatStyle" %>
+<%@ page import="java.time.ZoneId" %>
+
 
 <!DOCTYPE html>
 <html>
 <%@ include file = "../../header.jsp" %>
+  <% DateTimeFormatter formatter =
+		    DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+            .withLocale( Locale.US )
+            .withZone( ZoneId.systemDefault() ); %>
   <body>
     <div id="container">
       <h1>Activity</h1>
       <p>Here's everything that's happened on the site so far!</p>
-      <div style="height:600px;width:750px;border:5px solid #ccc;overflow:auto;">
+      <div style="height:600px;width:750px;border:5px solid #ccc;overflow:auto;">    
+    <%
+    List<Conversation> conversations =
+      (List<Conversation>) request.getAttribute("conversations");
+    if(conversations == null || conversations.isEmpty()){
+    %>
+      <p>Create a conversation to get started.</p>
+    <%
+    }
+    else{
+    %>
+      <ul class="mdl-list">
+    <%
+      for(Conversation conversation : conversations){
+    %>
+      <li>
+        <%= formatter.format(conversation.getCreationTime()) %>: 
+        <%= UserStore.getInstance().getUser(conversation.getOwnerId()).getName() %> created a new conversation:
+        <a href="/chat/<%= conversation.getTitle()%>">
+        <%= conversation.getTitle() %></a>
+      </li>
+      
+    <%
+      }
+    %>
+      </ul>
+    <%
+    }
+    %>
       </div>
+   </div>
+   
   </body>
 </html>
