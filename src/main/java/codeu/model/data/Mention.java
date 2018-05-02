@@ -12,7 +12,7 @@ public class Mention {
 
 	  private final UUID idOfMentioner;// the id of this User mentioning another user
 	  private final UUID idOfMentioned; // the id of the user being mentioned by this User
-	  private final String creationOfMessage;  // allows this user to create a message, mentioning another user
+	  private final String creationOfMessage;  // allows this user to create a message, mentioning another user, using "@"
 	  private final String notificationMessage; // the notification message where this user is being mentioned
 	  private final String[] notificationsOfMentions; // a string Array where each item is a string message-which is a
 	  						//particular message where this User was mentioned
