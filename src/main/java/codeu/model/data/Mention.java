@@ -14,8 +14,8 @@ public class Mention {
 	  private final UUID idOfMentioned; // the id of the user being mentioned by this User
 	  private final String creationOfMessage;  // allows this user to create a message, mentioning another user
 	  private final String NotificationMessage; // the notification message where this user is being mentioned
-	  private final String[] NotificationsOfMentions; // a string Array where each item is a string message(which is the
-	  												//particular message where this User was mentioned
+	  private final String[] NotificationsOfMentions; // a string Array where each item is a string message-which is a
+	  						//particular message where this User was mentioned
 	 
 
 	  public Mention(UUID idOfMentioner,UUID idOfMentioned, String creationOfMessage, String NotificationMessage, String[] NotificationsOfMentions) {
