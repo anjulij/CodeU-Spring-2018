@@ -13,8 +13,8 @@ public class Mention {
 	  private final UUID idOfMentioner;// the id of this User mentioning another user
 	  private final UUID idOfMentioned; // the id of the user being mentioned by this User
 	  private final String creationOfMessage;  // allows this user to create a message, mentioning another user
-	  private final String NotificationMessage; // the notification message where this user is being mentioned
-	  private final String[] NotificationsOfMentions; // a string Array where each item is a string message-which is a
+	  private final String notificationMessage; // the notification message where this user is being mentioned
+	  private final String[] notificationsOfMentions; // a string Array where each item is a string message-which is a
 	  						//particular message where this User was mentioned
 	 
 
@@ -22,8 +22,8 @@ public class Mention {
 	    this.idOfMentioner = idOfMentioner;
 	    this.idOfMentioned = idOfMentioned;
 	    this.creationOfMessage = creationOfMessage;
-	    this.NotificationMessage = NotificationMessage;
-	    this.NotificationsOfMentions = NotificationsOfMentions;
+	    this.notificationMessage = notificationMessage;
+	    this.notificationsOfMentions = notificationsOfMentions;
 	  }
 
 	  /** Returns the ID of this User mentioning another user. */
@@ -32,7 +32,7 @@ public class Mention {
 	  }
 
 	  /** Returns the ID of the other user that this User is mentioning */
-	  public UUID getIdOfMentioneg() {
+	  public UUID getIdOfMentioned() {
 		  return idOfMentioned;
 	  }
 
@@ -48,12 +48,12 @@ public class Mention {
 	  
 	  /** Returns the notification message where this user is being mentioned */
 	  public String getNotificationMessagee {
-	    return NotificationMessage;
+	    return notificationMessage;
 	  }
 	  
 	  /** Returns a string Array where each item is a string message where this User was mentioned */
-	  public String geNotificationsOfMentions {
-	    return NotificationsOfMentionse;
+	  public String getNotificationsOfMentions {
+	    return notificationsOfMentions;
 	  }
 	  
 	  
