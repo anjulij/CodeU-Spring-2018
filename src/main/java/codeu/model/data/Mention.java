@@ -1,6 +1,6 @@
 // Copyright 2017 Google Inc.
 
-package codeu.model.data;
+//package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -18,10 +18,12 @@ public class Mention {
 	  private final Instant creationTime;// represents the creation time of this Mention
 	  
 	  
-	  public Mention(UUID userWhoWasMentioned,UUID userWhoDidTheMentioning, int start, int end) {
+	  public Mention(UUID userWhoWasMentioned, UUID userWhoDidTheMentioning, int start, int end, Instant creationTime) {
 	    this.userWhoWasMentioned = userWhoWasMentioned;
 	    this.userWhoDidTheMentioning = userWhoDidTheMentioning;
-	    this. numberOfStringIndices = numberOfStringIndices;
+	    this. start = start;
+	    this. end = end;
+	    this. creationTime= creationTime;
 	  }
 
 	  /** Returns id of the user who was mentioned. */
@@ -41,7 +43,7 @@ public class Mention {
 	  }
 	  
 	  /** Returns the upper bound of the number of String Indices */
-	  public int getStart getNumberOfStringIndices() {
+	  public int getStart() {
 	    return start;
 	  }
 	  
