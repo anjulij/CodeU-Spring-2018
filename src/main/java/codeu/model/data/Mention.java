@@ -2,6 +2,7 @@
 
 package codeu.model.data;
 
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -12,10 +13,12 @@ public class Mention {
 
 	  private final UUID userWhoWasMentioned;// the id of the user who was mentioned
 	  private final UUID userWhoDidTheMentioning; // the id of the user who did the mentioning
-	  private int[] numberOfStringIndices = new int[2]; ; // represents the bounds of the number of String Indices
-	 
-
-	  public Mention(UUID userWhoWasMentioned,UUID userWhoDidTheMentioning, int[] numberOfStringIndices) {
+	  private final int start;// represents the lower bound of the number of String Indices
+	  private final int end;// represents the upper bound of the number of String Indices
+	  private final Instant creationTime;// represents the creation time of this User
+	  
+	  
+	  public Mention(UUID userWhoWasMentioned,UUID userWhoDidTheMentioning, int start, int end) {
 	    this.userWhoWasMentioned = userWhoWasMentioned;
 	    this.userWhoDidTheMentioning = userWhoDidTheMentioning;
 	    this. numberOfStringIndices = numberOfStringIndices;
@@ -32,9 +35,19 @@ public class Mention {
 	  }
 
 
-	  /** Returns he bounds of the number of String Indices */
-	  public int[] getNumberOfStringIndices() {
-	    return numberOfStringIndices;
+	  /** Returns the lower bound of the number of String Indices */
+	  public int getEnd() {
+	    return end;
+	  }
+	  
+	  /** Returns the upper bound of the number of String Indices */
+	  public int getStart getNumberOfStringIndices() {
+	    return start;
+	  }
+	  
+	  /** Returns the creation time of this mention. */
+	  public Instant getCreationTime() {
+	    return creationTime;
 	  }
 	  
 	}
