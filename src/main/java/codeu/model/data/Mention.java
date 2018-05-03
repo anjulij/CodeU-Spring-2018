@@ -1,8 +1,3 @@
-// Copyright 2017 Google Inc.
-
-package codeu.model.data;
-
-import java.util.UUID;
 
 /**
 The Mention class represent just a single mention and collects the data for a single mention.
@@ -23,7 +18,7 @@ public class Mention {
 
 	  /** Returns id of the user who was mentioned. */
 	  public UUID getUserWhoWasMentioned() {
-	    return userWhoDidTheMentioning;
+	    return userWhoWasMentioned;
 	  }
 
 	  /** Returns the the id of the user who did the mentioning */
