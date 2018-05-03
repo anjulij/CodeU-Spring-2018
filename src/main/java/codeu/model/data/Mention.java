@@ -1,3 +1,8 @@
+// Copyright 2017 Google Inc.
+
+package codeu.model.data;
+
+import java.util.UUID;
 
 /**
 The Mention class represent just a single mention and collects the data for a single mention.
