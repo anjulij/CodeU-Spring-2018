@@ -3,6 +3,7 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.UUID;
 
 /**
 The Mention class adds the ability to mention a user. 
@@ -18,7 +19,7 @@ public class Mention {
 	  						//particular message where this User was mentioned
 	 
 
-	  public Mention(UUID idOfMentioner,UUID idOfMentioned, String creationOfMessage, String NotificationMessage, String[] NotificationsOfMentions) {
+	  public Mention(UUID idOfMentioner,UUID idOfMentioned, String creationOfMessage, String notificationMessage, String[] notificationsOfMentions) {
 	    this.idOfMentioner = idOfMentioner;
 	    this.idOfMentioned = idOfMentioned;
 	    this.creationOfMessage = creationOfMessage;
@@ -36,23 +37,19 @@ public class Mention {
 		  return idOfMentioned;
 	  }
 
-	  /** Returns the password of this User. */
-	  public String getPassword() {
-	    return password;
-	  }
 
 	  /** Returns message created by this User--must require "@" sign */
-	  public String getCreationOfMessage {
+	  public String getCreationOfMessage() {
 	    return creationOfMessage;
 	  }
 	  
 	  /** Returns the notification message where this user is being mentioned */
-	  public String getNotificationMessagee {
+	  public String getNotificationMessagee() {
 	    return notificationMessage;
 	  }
 	  
 	  /** Returns a string Array where each item is a string message where this User was mentioned */
-	  public String getNotificationsOfMentions {
+	  public String[] getNotificationsOfMentions() {
 	    return notificationsOfMentions;
 	  }
 	  
