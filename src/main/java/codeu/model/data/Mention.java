@@ -15,7 +15,7 @@ public class Mention {
 	  private final UUID userWhoDidTheMentioning; // the id of the user who did the mentioning
 	  private final int start;// represents the lower bound of the number of String Indices
 	  private final int end;// represents the upper bound of the number of String Indices
-	  private final Instant creationTime;// represents the creation time of this User
+	  private final Instant creationTime;// represents the creation time of this Mention
 	  
 	  
 	  public Mention(UUID userWhoWasMentioned,UUID userWhoDidTheMentioning, int start, int end) {
