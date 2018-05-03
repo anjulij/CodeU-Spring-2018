@@ -21,31 +21,24 @@ public class Mention {
 	    this. end = end;
 	    this. creationTime= creationTime;
 	  }
-
 	  /** Returns id of the user who was mentioned. */
 	  public UUID getUserWhoWasMentioned() {
 	    return userWhoWasMentioned;
 	  }
-
 	  /** Returns the the id of the user who did the mentioning */
 	  public UUID getUserWhoDidTheMentioning() {
 		  return userWhoDidTheMentioning;
 	  }
-
-
 	  /** Returns the upper bound of the number of String Indices */
 	  public int getEnd() {
 	    return end;
-	  }
-	  
+	  }  
 	  /** Returns the lower bound of the number of String Indices */
 	  public int getStart() {
 	    return start;
-	  }
-	  
+	  }	  
 	  /** Returns the creation time of this mention. */
 	  public Instant getCreationTime() {
 	    return creationTime;
-	  }
-	  
+	  }	  
 	}
