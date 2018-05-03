@@ -37,12 +37,12 @@ public class Mention {
 	  }
 
 
-	  /** Returns the lower bound of the number of String Indices */
+	  /** Returns the upper bound of the number of String Indices */
 	  public int getEnd() {
 	    return end;
 	  }
 	  
-	  /** Returns the upper bound of the number of String Indices */
+	  /** Returns the lower bound of the number of String Indices */
 	  public int getStart() {
 	    return start;
 	  }
