@@ -6,52 +6,36 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
-The Mention class adds the ability to mention a user. 
-It also notifies users who have been mentioned
+The Mention class represent just a single mention and collects the data for a single mention.
+
  */
 public class Mention {
 
-	  private final UUID idOfMentioner;// the id of this User mentioning another user
-	  private final UUID idOfMentioned; // the id of the user being mentioned by this User
-	  private final String creationOfMessage;  // allows this user to create a message, mentioning another user, using "@"
-	  private final String notificationMessage; // the notification message where this user is being mentioned
-	  private final String[] notificationsOfMentions; // a string Array where each item is a string message-which is a
-	  						//particular message where this User was mentioned
+	  private final UUID userWhoWasMentioned;// the id of the user who was mentioned
+	  private final UUID userWhoDidTheMentioning; // the id of the user who did the mentioning
+	  private int[] numberOfStringIndices = new int[2]; ; // represents the bounds of the number of String Indices
 	 
 
-	  public Mention(UUID idOfMentioner,UUID idOfMentioned, String creationOfMessage, String notificationMessage, String[] notificationsOfMentions) {
-	    this.idOfMentioner = idOfMentioner;
-	    this.idOfMentioned = idOfMentioned;
-	    this.creationOfMessage = creationOfMessage;
-	    this.notificationMessage = notificationMessage;
-	    this.notificationsOfMentions = notificationsOfMentions;
+	  public Mention(UUID userWhoWasMentioned,UUID userWhoDidTheMentioning, int[] numberOfStringIndices) {
+	    this.userWhoWasMentioned = userWhoWasMentioned;
+	    this.userWhoDidTheMentioning = userWhoDidTheMentioning;
+	    this. numberOfStringIndices = numberOfStringIndices;
 	  }
 
-	  /** Returns the ID of this User mentioning another user. */
-	  public UUID getIdOfMentioner() {
-	    return idOfMentioner;
+	  /** Returns id of the user who was mentioned. */
+	  public UUID getUserWhoWasMentioned() {
+	    return userWhoDidTheMentioning;
 	  }
 
-	  /** Returns the ID of the other user that this User is mentioning */
-	  public UUID getIdOfMentioned() {
-		  return idOfMentioned;
+	  /** Returns the the id of the user who did the mentioning */
+	  public UUID getUserWhoDidTheMentioning() {
+		  return userWhoDidTheMentioning;
 	  }
 
 
-	  /** Returns message created by this User--must require "@" sign */
-	  public String getCreationOfMessage() {
-	    return creationOfMessage;
+	  /** Returns he bounds of the number of String Indices */
+	  public int[] getNumberOfStringIndices() {
+	    return numberOfStringIndices;
 	  }
-	  
-	  /** Returns the notification message where this user is being mentioned */
-	  public String getNotificationMessagee() {
-	    return notificationMessage;
-	  }
-	  
-	  /** Returns a string Array where each item is a string message where this User was mentioned */
-	  public String[] getNotificationsOfMentions() {
-	    return notificationsOfMentions;
-	  }
-	  
 	  
 	}
