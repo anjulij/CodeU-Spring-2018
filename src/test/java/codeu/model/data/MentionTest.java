@@ -8,14 +8,16 @@ import java.util.UUID;
 public class MentionTest {
 	@Test
 	public void testCreate() {
+		UUID idOfMention = UUID.randomUUID();
 		UUID userWhoWasMentioned = UUID.randomUUID();
 		UUID userWhoDidTheMentioning = UUID.randomUUID();
 		int start = 0;
 		int end = 4;
 		Instant creationTime = Instant.now();
 
-		Mention mention = new Mention(userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime);
-
+		Mention mention = new Mention(idOfMention, userWhoWasMentioned, userWhoDidTheMentioning, start, end,
+				creationTime);
+		Assert.assertEquals(idOfMention, mention.getIdOfMention());
 		Assert.assertEquals(userWhoWasMentioned, mention.getUserWhoWasMentioned());
 		Assert.assertEquals(userWhoDidTheMentioning, mention.getUserWhoDidTheMentioning());
 		Assert.assertEquals(start, mention.getStart());
