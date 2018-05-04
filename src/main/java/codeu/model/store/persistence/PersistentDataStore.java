@@ -177,4 +177,8 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
+public List<Mention> loadMentions() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
