@@ -198,12 +198,18 @@ public class ChatServlet extends HttpServlet {
   }
 
   public UUID searchForUser(String username){
-    UUID userID;
+    UUID userID = null;
     List<User> users = userStore.getUsers();
     //Sort list based on name
     Collections.sort(users, Comparator.comparing(User::getName));
-    //search list for matching name then return UUID
-    
+    //search list for matching name then return UUID //TODO make more efficient
+    for(int i = 0; i < users.size(); i++){
+      if(username.equalsIgnoreCase(users.get(i).getName())){
+        userID = users.get(i).getId();
+      }
+    }
+    //What to do if user isn't found
+
     return userID;
   }
 }
