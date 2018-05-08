@@ -1,4 +1,4 @@
-// Copyright 2017 Google Inc.
+package codeu.model.data;// Copyright 2017 Google Inc.
 
 //package codeu.model.data;
 import java.time.Instant;

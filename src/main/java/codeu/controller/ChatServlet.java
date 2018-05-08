@@ -15,6 +15,7 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Mention;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
@@ -22,6 +23,8 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -143,17 +146,64 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
+    Mention mention = getMention(cleanedMessageContent, user.getId(), Instant.now());
+
     Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
             cleanedMessageContent,
-            Instant.now());
+            Instant.now(),
+            mention);
 
     messageStore.addMessage(message);
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
+  }
+
+  //TODO: DON'T NEGLECT YOUR EDGE CASES the biggest one being when no one has been mentioned
+  public Mention getMention(String m, UUID u, Instant t){
+    String content = m;
+    UUID userID = u;
+    Instant creationTime = t;
+    int start = 1;
+    int end = 1;
+
+    //TODO: handle these variables' initial value
+    UUID userMentionedID;
+    String userMentioned = "";
+    Mention mention = null;
+
+    //look for start of mention
+    for (int i = 0; i < content.length() ; i++) {
+      if(content.charAt(i) == ' ' && content.charAt(i+1) == '@'){
+        start = i+1+1;
+      }
+    }
+    //start building string
+    if(content.charAt(start-1) == '@'){
+      StringBuilder sb = new StringBuilder();
+      for (int i = start; content.charAt(i) != ' '; i++) {
+        sb.append(content.charAt(i));
+      }
+      userMentioned = sb.toString();
+    }
+    //Search for userMentioned's UUID
+    userMentionedID = searchForUser(userMentioned);
+    //Create the mention
+    mention = new Mention(userMentionedID, userID, start, end, creationTime);
+    return mention;
+  }
+
+  public UUID searchForUser(String username){
+    UUID userID;
+    List<User> users = userStore.getUsers();
+    //Sort list based on name
+    Collections.sort(users, Comparator.comparing(User::getName));
+    //search list for matching name then return UUID
+    
+    return userID;
   }
 }

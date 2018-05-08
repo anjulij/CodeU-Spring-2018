@@ -118,6 +118,11 @@ public class UserStore {
     }
     return false;
   }
+  /**This returns a copy of all users */
+  public List<User> getUsers() {
+    List<User> userList = users;
+    return userList;
+  }
 
   /**
    * Sets the List of Users stored by this UserStore. This should only be called once, when the data
