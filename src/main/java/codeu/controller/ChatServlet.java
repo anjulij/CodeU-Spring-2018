@@ -171,7 +171,7 @@ public class ChatServlet extends HttpServlet {
     int start = 1;
     int end = 1;
 
-    //TODO: handle these variables' initial value
+    //TODO: handle these variables' initial values
     UUID userMentionedID;
     String userMentioned = "";
     Mention mention = null;
