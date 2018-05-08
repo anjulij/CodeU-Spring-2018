@@ -196,7 +196,8 @@ public class ChatServlet extends HttpServlet {
     mention = new Mention(userMentionedID, userID, start, end, creationTime);
     return mention;
   }
-
+  
+  //Could be moved to UserStore
   public UUID searchForUser(String username){
     UUID userID = null;
     List<User> users = userStore.getUsers();
