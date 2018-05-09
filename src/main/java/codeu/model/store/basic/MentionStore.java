@@ -110,7 +110,7 @@ public class MentionStore {
 	}
 
 	/** Sets the List of Mentions stored by this MentionStore. */
-	public void setMessages(List<Mention> mentions) {
+	public void setMentions(List<Mention> mentions) {
 		this.mentions = mentions;
 	}
 }
