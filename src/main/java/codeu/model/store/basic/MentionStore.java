@@ -86,7 +86,7 @@ public class MentionStore {
 	 * Add/replace a new mention to the current set of mentions known to the
 	 * application.
 	 */
-	public void addMentions(Mention mention) {
+	public void addMention(Mention mention) {
 		Mention original = getMentionID(mention.getIdOfMention());
 		if (original != null) {
 			mentions.remove(original);
