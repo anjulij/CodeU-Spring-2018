@@ -174,9 +174,40 @@ public class PersistentDataStore {
 	 *             if an error was detected during the load from the Datastore
 	 *             service
 	 */
-	public List<Mention> loadMentions() {
-		// TODO Auto-generated method stub
-		return null;
+	  public List<Mention> loadMentions() throws PersistentDataStoreException {
+
+		List<Mention> mentions = new ArrayList<>();
+
+		// Retrieve all mentions from the datastore.
+		Query query = new Query("chat-mentions");
+		PreparedQuery results = datastore.prepare(query);
+
+		for (Entity entity : results.asIterable()) {
+			try {
+				UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+				UUID userWhoWasMentioned = UUID.fromString((String) entity.getProperty("userWhoWasMentioned"));
+				UUID userWhoDidTheMentioning = UUID.fromString((String) entity.getProperty("userWhoDidTheMentioning"));
+				int start = Integer.parseInt((String) entity.getProperty("start"));
+				int end = Integer.parseInt((String) entity.getProperty("end"));
+				Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+				// Note that any mentions created prior to this point will not be
+				// blocked, because
+				// this fails open.
+				boolean blocked = Boolean.parseBoolean((String) entity.getProperty("blocked"));
+
+				Mention mention = new User(uuid, userWhoWasMentioned,userWhoDidTheMentioning,start,end,creation_time, blocked);
+				mentions.add(mention);
+			} catch (Exception e) {
+				// In a production environment, errors should be very rare.
+				// Errors which may
+				// occur include network errors, Datastore service errors,
+				// authorization errors,
+				// database entity definition mismatches, or service mismatches.
+				throw new PersistentDataStoreException(e);
+			}
+		}
+
+		return mentions;
 	}
 
 	/** Write a User object to the Datastore service. */
