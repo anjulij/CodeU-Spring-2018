@@ -215,6 +215,7 @@ public class PersistentDataStore {
 	/** Write a Mention object to the Datastore service. */
 	public void writeThrough(Mention mention) {
 		Entity mentionEntity = new Entity("chat-mentions", mention.getIdOfMention().toString());
+		mentionEntity.setProperty("uuid", mention.getId().toString());
 		mentionEntity.setProperty("userWhoWasMentioned", mention.getUserWhoWasMentioned().toString());
 		mentionEntity.setProperty("userWhoDidTheMentioning", mention.getUserWhoDidTheMentioning().toString());
 		mentionEntity.setProperty("start", mention.getStart());
