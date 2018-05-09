@@ -10,7 +10,7 @@ import java.util.UUID;
  * 
  */
 public class Mention {
-	private final UUID idOfMention; // id the ID of this Mention
+	private final UUID id; // the ID of this Mention
 	private final UUID userWhoWasMentioned;// the id of the user who was
 											// mentioned
 	private final UUID userWhoDidTheMentioning; // the id of the user who did
