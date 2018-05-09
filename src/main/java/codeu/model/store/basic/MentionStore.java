@@ -73,7 +73,7 @@ public class MentionStore {
 	 *
 	 * @return null if the UUID does not match any existing Mentions.
 	 */
-	public Mention getMentionID(UUID id) {
+	public Mention getMentionById(UUID id) {
 		for (Mention mention : mentions) {
 			if (mention.getIdOfMention().equals(id)) {
 				return mention;
