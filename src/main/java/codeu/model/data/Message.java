@@ -25,8 +25,6 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-  private final Mention mention;
-
   /**
    * Constructs a new Message.
    *
@@ -36,13 +34,12 @@ public class Message {
    * @param content the text content of this Message
    * @param creation the creation time of this Message
    */
-  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation, Mention mention) {
+  public Message(UUID id, UUID conversation, UUID author, String content, Instant creation) {
     this.id = id;
     this.conversation = conversation;
     this.author = author;
     this.content = content;
     this.creation = creation;
-    this.mention = mention;
   }
 
   /** Returns the ID of this Message. */
@@ -70,10 +67,7 @@ public class Message {
     return creation;
   }
 
-  /** Returns the mention of this Message. */
-  public Mention getMention() {
-    return mention;
-  }
+
 
 
 }

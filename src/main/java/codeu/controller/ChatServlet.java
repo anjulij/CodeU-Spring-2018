@@ -31,6 +31,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -146,35 +148,37 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
-    Mention mention = getMention(cleanedMessageContent, user.getId(), Instant.now());
-
     Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
             cleanedMessageContent,
-            Instant.now(),
-            mention);
+            Instant.now());
 
     messageStore.addMessage(message);
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
+
+    //Get mentions
+    Mention mention = getMention(message);
+
   }
 
   //TODO: DON'T NEGLECT YOUR EDGE CASES the biggest one being when no one has been mentioned
-  public Mention getMention(String m, UUID u, Instant t){
-    String content = m;
-    UUID userID = u;
-    Instant creationTime = t;
-    int start = 1;
-    int end = 1;
+  public Mention getMention(Message message){
+    Message m = message;
+    String content = m.getContent();
+    UUID userID = m.getAuthorId();
+    Instant creationTime = m.getCreationTime();
 
     //TODO: handle these variables' initial values
+    int start=1;
+    int end=1;
     UUID userMentionedID;
     String userMentioned = "";
-    Mention mention = null;
+    Mention mention;
 
     //look for start of mention
     for (int i = 0; i < content.length() ; i++) {
@@ -187,28 +191,33 @@ public class ChatServlet extends HttpServlet {
       StringBuilder sb = new StringBuilder();
       for (int i = start; content.charAt(i) != ' '; i++) {
         sb.append(content.charAt(i));
+        //TODO: get end index
       }
       userMentioned = sb.toString();
     }
+
     //Search for userMentioned's UUID
     userMentionedID = searchForUser(userMentioned);
+
     //Create the mention
-    mention = new Mention(userMentionedID, userID, start, end, creationTime);
+    mention = new Mention(userMentionedID, userID, start,end,creationTime, m);
     return mention;
   }
-  
+
   //Could be moved to UserStore
+  //TODO: fix this
   public UUID searchForUser(String username){
     UUID userID = null;
-    List<User> users = userStore.getUsers();
-    //Sort list based on name
-    Collections.sort(users, Comparator.comparing(User::getName));
+
+    /*//Sort list based on name
+    List<User> userList = users.getAllUsers();
+    Collections.sort(userList, Comparator.comparing(User::getName));
     //search list for matching name then return UUID //TODO make more efficient
-    for(int i = 0; i < users.size(); i++){
-      if(username.equalsIgnoreCase(users.get(i).getName())){
-        userID = users.get(i).getId();
+    for(int i = 0; i < userList.size(); i++){
+      if(username.equalsIgnoreCase(userList.get(i).getName())){
+        userID = userList.get(i).getId();
       }
-    }
+    }*/
     //What to do if user isn't found
 
     return userID;
