@@ -51,7 +51,7 @@ public class MentionStore {
 	 */
 	private PersistentStorageAgent persistentStorageAgent;
 
-	/** The in-memory list of Users. */
+	/** The in-memory list of Mentions. */
 	private List<Mention> mentions;
 
 	/**
