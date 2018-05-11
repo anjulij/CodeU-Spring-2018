@@ -162,7 +162,7 @@ public class ChatServlet extends HttpServlet {
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
 
-    //Get mentions
+    //Get mentions in an individual single message
     List<Mention> mentionsList = getMentions(message);
 
   }
@@ -187,7 +187,7 @@ public class ChatServlet extends HttpServlet {
     StringBuilder sb = new StringBuilder();
 
     for (int i = s; i < content.length(); i++) {
-      if(content.charAt(i) == ' '){
+      if(content.charAt(i) == ' ' || i == content.length()-1){
         end = i;
         break;
       }else{
@@ -207,7 +207,7 @@ public class ChatServlet extends HttpServlet {
   }
 
   //Could be moved to UserStore
-  //TODO: fix this
+  //TODO: What to do if user isn't found
   public UUID searchForUser(String username){
     UUID userID = userStore.getAllUsers().stream()
             .filter(user -> username.equalsIgnoreCase(user.getName()))
@@ -228,8 +228,6 @@ public class ChatServlet extends HttpServlet {
         userID = user.getId();
       }
     }*/
-    //What to do if user isn't found
-
     return userID;
   }
 }
