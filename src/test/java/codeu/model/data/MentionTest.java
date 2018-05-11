@@ -1,9 +1,9 @@
-// Copyright 2017 Google Inc.
-
 package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class MentionTest {
 	@Test
