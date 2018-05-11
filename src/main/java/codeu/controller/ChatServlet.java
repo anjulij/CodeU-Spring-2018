@@ -23,10 +23,7 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +32,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+
+import com.google.common.collect.ImmutableList;
+import java.util.stream.Collectors;
+
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -162,60 +163,69 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
 
     //Get mentions
-    Mention mention = getMention(message);
+    getMentions(message);
 
   }
+  public List<Mention> getMentions(Message message){
+    List<Mention> mentions = new ArrayList<>();
+    String content = message.getContent();
 
-  //TODO: DON'T NEGLECT YOUR EDGE CASES the biggest one being when no one has been mentioned
-  public Mention getMention(Message message){
-    Message m = message;
-    String content = m.getContent();
-    UUID userID = m.getAuthorId();
-    Instant creationTime = m.getCreationTime();
-
-    //TODO: handle these variables' initial values
-    int start=1;
-    int end=1;
-    UUID userMentionedID;
-    String userMentioned = "";
-    Mention mention;
-
-    //look for start of mention
-    for (int i = 0; i < content.length() ; i++) {
+    for (int i = 0; i < content.length(); i++) {
       if(content.charAt(i) == ' ' && content.charAt(i+1) == '@'){
-        start = i+1+1;
+        int mentionStart = i+1+1;
+        mentions.add(getMention(mentionStart,message));
       }
     }
-    //start building string
-    if(content.charAt(start-1) == '@'){
-      StringBuilder sb = new StringBuilder();
-      for (int i = start; content.charAt(i) != ' '; i++) {
+
+    return mentions;
+  }
+
+  public Mention getMention(int s, Message m){
+    String content = m.getContent();
+    int start = s;
+    int end = 0;
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = s; i < content.length(); i++) {
+      if(content.charAt(i) == ' '){
+        end = i;
+        break;
+      }else{
         sb.append(content.charAt(i));
-        //TODO: get end index
       }
-      userMentioned = sb.toString();
     }
 
-    //Search for userMentioned's UUID
-    userMentionedID = searchForUser(userMentioned);
-
-    //Create the mention
-    mention = new Mention(userMentionedID, userID, start,end,creationTime, m);
+    String userMentioned = sb.toString();
+    UUID userMentionedID = searchForUser(userMentioned);
+    Mention mention = new Mention(userMentionedID,
+            m.getAuthorId(),
+            start,
+            end,
+            m.getCreationTime(),
+            m);
     return mention;
   }
 
   //Could be moved to UserStore
   //TODO: fix this
   public UUID searchForUser(String username){
-    UUID userID = null;
+    UUID userID = userStore.getAllUsers().stream()
+            .filter(user -> username.equalsIgnoreCase(user.getName()))
+                    .findAny().findAny().orElse(null);
 
     /*//Sort list based on name
     List<User> userList = users.getAllUsers();
     Collections.sort(userList, Comparator.comparing(User::getName));
-    //search list for matching name then return UUID //TODO make more efficient
+    //search list for matching name then return UUID
     for(int i = 0; i < userList.size(); i++){
       if(username.equalsIgnoreCase(userList.get(i).getName())){
         userID = userList.get(i).getId();
+      }
+    }*/
+
+    /*for (User user : userStore.getAllUsers()) {
+      if(username.equalsIgnoreCase(user.getName())){
+        userID = user.getId();
       }
     }*/
     //What to do if user isn't found
