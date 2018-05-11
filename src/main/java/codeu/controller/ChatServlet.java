@@ -163,7 +163,7 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
 
     //Get mentions
-    getMentions(message);
+    List<Mention> mentionsList = getMentions(message);
 
   }
   public List<Mention> getMentions(Message message){
