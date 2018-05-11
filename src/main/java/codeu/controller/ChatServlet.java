@@ -33,9 +33,6 @@ import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.google.common.collect.ImmutableList;
-import java.util.stream.Collectors;
-
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -209,25 +206,15 @@ public class ChatServlet extends HttpServlet {
   //Could be moved to UserStore
   //TODO: What to do if user isn't found
   public UUID searchForUser(String username){
-    UUID userID = userStore.getAllUsers().stream()
-            .filter(user -> username.equalsIgnoreCase(user.getName()))
-                    .findAny().findAny().orElse(null);
+    UUID userID = null;
 
-    /*//Sort list based on name
-    List<User> userList = users.getAllUsers();
-    Collections.sort(userList, Comparator.comparing(User::getName));
-    //search list for matching name then return UUID
-    for(int i = 0; i < userList.size(); i++){
-      if(username.equalsIgnoreCase(userList.get(i).getName())){
-        userID = userList.get(i).getId();
-      }
-    }*/
 
-    /*for (User user : userStore.getAllUsers()) {
+    for (User user : userStore.getAllUsers()) {
       if(username.equalsIgnoreCase(user.getName())){
         userID = user.getId();
       }
-    }*/
+    }
+
     return userID;
   }
 }
