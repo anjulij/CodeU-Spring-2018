@@ -15,9 +15,9 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Mention;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -49,8 +49,8 @@ public class PersistentDataStore {
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
@@ -66,15 +66,18 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-	// Note that any users created prior to this point will not be blocked, because
-	// this fails open.
-	boolean blocked = Boolean.parseBoolean((String) entity.getProperty("blocked"));
+        // Note that any users created prior to this point will not be
+        // blocked, because
+        // this fails open.
+        boolean blocked = Boolean.parseBoolean((String) entity.getProperty("blocked"));
 
         User user = new User(uuid, userName, password, creationTime, blocked);
         users.add(user);
       } catch (Exception e) {
-        // In a production environment, errors should be very rare. Errors which may
-        // occur include network errors, Datastore service errors, authorization errors,
+        // In a production environment, errors should be very rare.
+        // Errors which may
+        // occur include network errors, Datastore service errors,
+        // authorization errors,
         // database entity definition mismatches, or service mismatches.
         throw new PersistentDataStoreException(e);
       }
@@ -86,8 +89,8 @@ public class PersistentDataStore {
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
@@ -103,12 +106,14 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-	boolean muted = Boolean.parseBoolean((String) entity.getProperty("muted"));
+        boolean muted = Boolean.parseBoolean((String) entity.getProperty("muted"));
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, muted);
         conversations.add(conversation);
       } catch (Exception e) {
-        // In a production environment, errors should be very rare. Errors which may
-        // occur include network errors, Datastore service errors, authorization errors,
+        // In a production environment, errors should be very rare.
+        // Errors which may
+        // occur include network errors, Datastore service errors,
+        // authorization errors,
         // database entity definition mismatches, or service mismatches.
         throw new PersistentDataStoreException(e);
       }
@@ -120,8 +125,8 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
@@ -141,14 +146,57 @@ public class PersistentDataStore {
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
-        // In a production environment, errors should be very rare. Errors which may
-        // occur include network errors, Datastore service errors, authorization errors,
+        // In a production environment, errors should be very rare.
+        // Errors which may
+        // occur include network errors, Datastore service errors,
+        // authorization errors,
         // database entity definition mismatches, or service mismatches.
         throw new PersistentDataStoreException(e);
       }
     }
 
     return messages;
+  }
+
+  /**
+   * Loads all Mention objects from the Datastore service and returns them in a List.
+   *
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
+   */
+  public List<Mention> loadMentions() throws PersistentDataStoreException {
+
+    List<Mention> mentions = new ArrayList<>();
+
+    // Retrieve all mentions from the datastore.
+    Query query = new Query("chat-mentions");
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+        UUID userWhoWasMentioned =
+            UUID.fromString((String) entity.getProperty("userWhoWasMentioned"));
+        UUID userWhoDidTheMentioning =
+            UUID.fromString((String) entity.getProperty("userWhoDidTheMentioning"));
+        int start = Integer.parseInt((String) entity.getProperty("start"));
+        int end = Integer.parseInt((String) entity.getProperty("end"));
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        Mention mention =
+            new Mention(
+                uuid, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime);
+        mentions.add(mention);
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare.
+        // Errors which may
+        // occur include network errors, Datastore service errors,
+        // authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return mentions;
   }
 
   /** Write a User object to the Datastore service. */
@@ -182,5 +230,18 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     conversationEntity.setProperty("muted", Boolean.toString(conversation.isMuted()));
     datastore.put(conversationEntity);
+  }
+
+  /** Write a Mention object to the Datastore service. */
+  public void writeThrough(Mention mention) {
+    Entity mentionEntity = new Entity("chat-mentions", mention.getId().toString());
+    mentionEntity.setProperty("uuid", mention.getId().toString());
+    mentionEntity.setProperty("userWhoWasMentioned", mention.getUserWhoWasMentioned().toString());
+    mentionEntity.setProperty(
+        "userWhoDidTheMentioning", mention.getUserWhoDidTheMentioning().toString());
+    mentionEntity.setProperty("start", mention.getStart());
+    mentionEntity.setProperty("end", mention.getEnd());
+    mentionEntity.setProperty("creation_time", mention.getCreationTime().toString());
+    datastore.put(mentionEntity);
   }
 }

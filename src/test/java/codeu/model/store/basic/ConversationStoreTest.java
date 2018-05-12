@@ -20,7 +20,8 @@ public class ConversationStoreTest {
       new Conversation(
           UUID.randomUUID(), UUID.randomUUID(), "conversation_one", Instant.ofEpochMilli(1000));
 
-  private final Conversation MUTED_CONVERSATION_ONE = Conversation.muteConversation(CONVERSATION_ONE);
+  private final Conversation MUTED_CONVERSATION_ONE =
+      Conversation.muteConversation(CONVERSATION_ONE);
 
   @Before
   public void setup() {
@@ -38,7 +39,8 @@ public class ConversationStoreTest {
     conversationStore.addConversation(MUTED_CONVERSATION_ONE);
     Assert.assertEquals(1, conversationStore.getAllConversations().size());
     Mockito.verify(mockPersistentStorageAgent).writeThrough(MUTED_CONVERSATION_ONE);
-    Conversation storedConversation = conversationStore.getConversationWithTitle(CONVERSATION_ONE.getTitle());
+    Conversation storedConversation =
+        conversationStore.getConversationWithTitle(CONVERSATION_ONE.getTitle());
     assertEquals(MUTED_CONVERSATION_ONE, storedConversation);
   }
 
@@ -90,7 +92,6 @@ public class ConversationStoreTest {
     Assert.assertEquals(expectedConversation.getTitle(), actualConversation.getTitle());
     Assert.assertEquals(
         expectedConversation.getCreationTime(), actualConversation.getCreationTime());
-    Assert.assertEquals(
-        expectedConversation.isMuted(), actualConversation.isMuted());
+    Assert.assertEquals(expectedConversation.isMuted(), actualConversation.isMuted());
   }
 }

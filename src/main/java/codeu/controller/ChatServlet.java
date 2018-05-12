@@ -133,7 +133,8 @@ public class ChatServlet extends HttpServlet {
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null || conversation.isMuted()) {
-      // couldn't find conversation, or the conversation can't be shown: redirect to conversation list
+      // couldn't find conversation, or the conversation can't be shown: redirect to conversation
+      // list
       response.sendRedirect("/conversations");
       return;
     }

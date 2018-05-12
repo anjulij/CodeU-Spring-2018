@@ -14,16 +14,9 @@
 
 package codeu.controller;
 
-import codeu.model.data.Conversation;
 import codeu.model.data.User;
-import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,19 +29,17 @@ public class UserAdminServlet extends BaseAdminServlet {
       throws IOException, ServletException {
     // Note that on the login page, the username is a form parameter, but gets turned into
     // a user object on the *session*.
-    String username = request.getParameter("username"); 
+    String username = request.getParameter("username");
     User userToBeShown = userStore.getUser(username);
     request.setAttribute("userToBeShown", userToBeShown);
     request.getRequestDispatcher(SELF_JSP).forward(request, response);
   }
 
-  /**
-   * Performs editing of a user.
-   */
+  /** Performs editing of a user. */
   @Override
   protected void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String username = request.getParameter("username"); 
+    String username = request.getParameter("username");
     User userToBeEdited = userStore.getUser(username);
     // TODO(ncjones): there should be better error checking here.
     if (userToBeEdited != null) {
@@ -62,9 +53,9 @@ public class UserAdminServlet extends BaseAdminServlet {
         userStore.addUser(editedUser);
       } else if ("Reset".equals(action)) {
         String newPassword = request.getParameter("new_password");
-	if (newPassword == null) {
+        if (newPassword == null) {
           newPassword = "password";
-	}
+        }
         editedUser = User.resetPassword(userToBeEdited, newPassword);
         userStore.addUser(editedUser);
       } else {

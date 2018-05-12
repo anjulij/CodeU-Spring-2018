@@ -24,14 +24,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginServletTest {
 
@@ -114,7 +112,7 @@ public class LoginServletTest {
     when(mockUser.isBlocked()).thenReturn(true);
     when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     when(mockUserStore.getUser("test username")).thenReturn(mockUser);
-    
+
     loginServlet.doPost(mockRequest, mockResponse);
 
     verify(mockRequestDispatcher).forward(mockRequest, mockResponse);

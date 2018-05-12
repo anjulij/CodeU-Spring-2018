@@ -1,20 +1,9 @@
 // Copyright 2017 Google Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Mention;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
@@ -23,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -55,6 +43,12 @@ public class DefaultDataStore {
    */
   private int DEFAULT_MESSAGE_COUNT = 100;
 
+  /**
+   * Default mention count. Only used if USE_DEFAULT_DATA is true. Each mention is assigned a random
+   * author and mention.
+   */
+  private int DEFAULT_MENTION_COUNT = 30;
+
   private static DefaultDataStore instance = new DefaultDataStore();
 
   public static DefaultDataStore getInstance() {
@@ -64,17 +58,20 @@ public class DefaultDataStore {
   private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
+  private List<Mention> mentions;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
+    mentions = new ArrayList<>();
 
     if (USE_DEFAULT_DATA) {
       addRandomUsers();
       addRandomConversations();
       addRandomMessages();
+      addRandomMentions();
     }
   }
 
@@ -94,17 +91,28 @@ public class DefaultDataStore {
     return messages;
   }
 
+  public List<Mention> getAllMentions() {
+    return mentions;
+  }
+
   private void addRandomUsers() {
 
     List<String> randomUsernames = getRandomUsernames();
     Collections.shuffle(randomUsernames);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()), Instant.now());
+      User user =
+          new User(
+              UUID.randomUUID(),
+              randomUsernames.get(i),
+              BCrypt.hashpw("password", BCrypt.gensalt()),
+              Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
   }
+  // *****need to update this
+  private void addRandomMentions() {}
 
   private void addRandomConversations() {
     for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
