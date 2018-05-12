@@ -14,18 +14,13 @@
 
 package codeu.controller;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import codeu.model.data.Conversation;
-import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,29 +28,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class BaseAdminServletTest {
 
   /**
-   * A stubbed (not mocked) subclass of a base admin servlet. Testing subclasses
-   * in mockito is a bit harder, since you actually have to provide an implementation
-   * of pure abstract methods, and this is a quick and dirty way to do it.
+   * A stubbed (not mocked) subclass of a base admin servlet. Testing subclasses in mockito is a bit
+   * harder, since you actually have to provide an implementation of pure abstract methods, and this
+   * is a quick and dirty way to do it.
    */
   private static final class StubbedAdminServlet extends BaseAdminServlet {
     int numValidatedGetCalls;
     int numValidatedPostCalls;
 
-    @Override protected void onValidatedGet(
-        HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    protected void onValidatedGet(HttpServletRequest request, HttpServletResponse response) {
       ++numValidatedGetCalls;
     }
 
-    @Override protected void onValidatedPost(
-        HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    protected void onValidatedPost(HttpServletRequest request, HttpServletResponse response) {
       ++numValidatedPostCalls;
     }
   }
@@ -96,8 +89,7 @@ public class BaseAdminServletTest {
 
     adminServlet.doGet(mockRequest, mockResponse);
 
-    verify(mockConversationStore, never())
-        .addConversation(any(Conversation.class));
+    verify(mockConversationStore, never()).addConversation(any(Conversation.class));
     verify(mockResponse).sendRedirect("/login");
     assertEquals(0, adminServlet.numValidatedGetCalls);
     assertEquals(0, adminServlet.numValidatedPostCalls);
@@ -109,8 +101,7 @@ public class BaseAdminServletTest {
 
     adminServlet.doGet(mockRequest, mockResponse);
 
-    verify(mockConversationStore, never())
-        .addConversation(any(Conversation.class));
+    verify(mockConversationStore, never()).addConversation(any(Conversation.class));
     verify(mockResponse).sendRedirect("/conversations");
     assertEquals(0, adminServlet.numValidatedGetCalls);
     assertEquals(0, adminServlet.numValidatedPostCalls);

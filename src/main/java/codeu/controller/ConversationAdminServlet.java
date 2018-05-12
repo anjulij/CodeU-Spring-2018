@@ -16,14 +16,8 @@ package codeu.controller;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
-import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +28,7 @@ public class ConversationAdminServlet extends BaseAdminServlet {
   @Override
   protected void onValidatedGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String conversation = request.getParameter("conversation"); 
+    String conversation = request.getParameter("conversation");
     Conversation conversationToBeShown = conversationStore.getConversationWithTitle(conversation);
     if (conversationToBeShown != null) {
       User author = userStore.getUser(conversationToBeShown.getOwnerId());
@@ -47,10 +41,10 @@ public class ConversationAdminServlet extends BaseAdminServlet {
   @Override
   protected void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String conversation = request.getParameter("conversation"); 
+    String conversation = request.getParameter("conversation");
     Conversation originalConversation = conversationStore.getConversationWithTitle(conversation);
     Conversation editedConversation;
-    String action = request.getParameter("action");    
+    String action = request.getParameter("action");
     if ("Mute".equals(action)) {
       editedConversation = Conversation.muteConversation(originalConversation);
       conversationStore.addConversation(editedConversation);

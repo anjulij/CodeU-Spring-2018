@@ -16,7 +16,6 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class ConversationStore {
 
   /** Add a new conversation to the current set of conversations known to the application. */
   public void addConversation(Conversation conversation) {
-    Conversation original = getConversationWithTitle(conversation.getTitle());  
+    Conversation original = getConversationWithTitle(conversation.getTitle());
     if (original != null) {
       conversations.remove(original);
     }

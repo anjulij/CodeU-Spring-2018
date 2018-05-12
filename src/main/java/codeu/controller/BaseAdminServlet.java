@@ -14,14 +14,9 @@
 
 package codeu.controller;
 
-import codeu.model.data.Conversation;
-import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,8 +38,8 @@ public abstract class BaseAdminServlet extends HttpServlet {
   private static final String ADMIN_USER = "admin";
 
   /**
-   * Set up state for handling admin-related requests. This basically means
-   * we need everything. Not called in unit tests, which is a bit troubling.
+   * Set up state for handling admin-related requests. This basically means we need everything. Not
+   * called in unit tests, which is a bit troubling.
    */
   @Override
   public void init() throws ServletException {
@@ -84,22 +79,18 @@ public abstract class BaseAdminServlet extends HttpServlet {
     }
   }
 
-  /**
-   * Functionality that an implementation class provides to fulfill a GET command.
-   */
+  /** Functionality that an implementation class provides to fulfill a GET command. */
   protected abstract void onValidatedGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException;
 
-  /**
-   * Functionality that an implementation class provides to fulfill a POST command.
-   */
+  /** Functionality that an implementation class provides to fulfill a POST command. */
   protected abstract void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException;
 
   /**
-   * This function fires when a user navigates to the admin page. It gets all of the
-   * conversations from the model and forwards to admin.jsp for rendering the list.
-   * Note that this needs to gate on user.
+   * This function fires when a user navigates to the admin page. It gets all of the conversations
+   * from the model and forwards to admin.jsp for rendering the list. Note that this needs to gate
+   * on user.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)

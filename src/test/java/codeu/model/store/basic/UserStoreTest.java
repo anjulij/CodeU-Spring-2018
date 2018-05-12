@@ -21,7 +21,8 @@ public class UserStoreTest {
   private final User USER_TWO =
       new User(UUID.randomUUID(), "test_username_two", "password two", Instant.ofEpochMilli(2000));
   private final User USER_THREE =
-      new User(UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000));
+      new User(
+          UUID.randomUUID(), "test_username_three", "password three", Instant.ofEpochMilli(3000));
   private final User BLOCKED_USER_ONE = User.blockUser(USER_ONE);
 
   @Before
