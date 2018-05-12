@@ -25,9 +25,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= conversation.getTitle() %></title>
-  <link rel="stylesheet" href="/css/main.css" type="text/css">
-
+<title>The Unnamed Ones&#39; CodeU Chat App</title>
+  <link rel="stylesheet" href="/css/main.css">
   <style>
     #chat {
       background-color: white;
@@ -45,18 +44,19 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   </script>
 </head>
 <body onload="scrollChat()">
-
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/conversations">Conversations</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else { %>
+    <a id="navTitle" href="/">The Unnamed Ones&#39; CodeU Chat App</a>
+    
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+    <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
+    <a href="/activity">Activity</a> 
+    <a href="/conversations">Conversations</a> 
     <a href="/about.jsp">About</a>
+    <a href="/testdata">Load Test Data</a>
   </nav>
-
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
@@ -66,21 +66,27 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <div id="chat">
       <ul>
-    <%
-      for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
-    %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
-    <%
-      }
-    %>
+        <%
+          if (!conversation.isMuted()) {
+            for (Message message : messages) {
+              String author = UserStore.getInstance()
+                .getUser(message.getAuthorId()).getName();
+            %>
+              <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+            <%
+            }
+          } else {
+            %>
+	      <li>This conversation is muted.</li>
+	    <%
+	  }
+	%>
       </ul>
     </div>
 
     <hr/>
 
-    <% if (request.getSession().getAttribute("user") != null) { %>
+    <% if (request.getSession().getAttribute("user") != null && !conversation.isMuted()) { %>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>

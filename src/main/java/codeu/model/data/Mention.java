@@ -22,9 +22,9 @@ public class Mention {
 	private final Instant creationTime;// represents the creation time of this
 										// Mention
 
-	public Mention(UUID idOfMention, UUID userWhoWasMentioned, UUID userWhoDidTheMentioning, int start, int end,
+	public Mention(UUID id, UUID userWhoWasMentioned, UUID userWhoDidTheMentioning, int start, int end,
 			Instant creationTime) {
-		this.idOfMention = idOfMention;
+		this.id = id;
 		this.userWhoWasMentioned = userWhoWasMentioned;
 		this.userWhoDidTheMentioning = userWhoDidTheMentioning;
 		this.start = start;
@@ -33,8 +33,8 @@ public class Mention {
 	}
 
 	/** Returns id of the mention. */
-	public UUID getIdOfMention() {
-		return idOfMention;
+	public UUID getId() {
+		return id;
 	}
 
 	/** Returns id of the user who was mentioned. */

@@ -15,33 +15,25 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.time.format.FormatStyle" %>
+<%@ page import="java.time.ZoneId" %>
+
 
 <!DOCTYPE html>
 <html>
 <%@ include file = "../../header.jsp" %>
-<body>
-  <div id="container">
-
-    <% if(request.getAttribute("error") != null){ %>
-        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
-    <% } %>
-
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <h1>New Conversation</h1>
-      <form action="/conversations" method="POST">
-          <div class="form-group">
-            <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle">
-        </div>
-
-        <button type="submit">Create</button>
-      </form>
-
-      <hr/>
-    <% } %>
-
-    <h1>Conversations</h1>
-
+  <% DateTimeFormatter formatter =
+		    DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+            .withLocale( Locale.US )
+            .withZone( ZoneId.systemDefault() ); %>
+  <body>
+    <div id="container">
+      <h1>Activity</h1>
+      <p>Here's everything that's happened on the site so far!</p>
+      <div style="height:600px;width:750px;border:5px solid #ccc;overflow:auto;">    
     <%
     List<Conversation> conversations =
       (List<Conversation>) request.getAttribute("conversations");
@@ -56,8 +48,13 @@
     <%
       for(Conversation conversation : conversations){
     %>
-      <li><a href="/chat/<%= conversation.getTitle() %>">
-        <%= conversation.getTitle() %></a></li>
+      <li>
+        <%= formatter.format(conversation.getCreationTime()) %>: 
+        <%= UserStore.getInstance().getUser(conversation.getOwnerId()).getName() %> created a new conversation:
+        <a href="/chat/<%= conversation.getTitle()%>">
+        <%= conversation.getTitle() %></a>
+      </li>
+      
     <%
       }
     %>
@@ -65,7 +62,8 @@
     <%
     }
     %>
-    <hr/>
-  </div>
-</body>
+      </div>
+   </div>
+   
+  </body>
 </html>

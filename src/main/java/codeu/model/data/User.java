@@ -21,22 +21,53 @@ import java.util.UUID;
 public class User {
   private final UUID id;
   private final String name;
-  private final String password;
+  private final String hashedPassword;
   private final Instant creation;
+  private final boolean blocked;
 
   /**
    * Constructs a new User.
    *
    * @param id the ID of this User
    * @param name the username of this User
-   * @param password the password of this User
+   * @param hashedPassword the hashed password of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String hashedPassword, Instant creation) {
+    this(id, name, hashedPassword, creation, false);
+  }
+
+  /**
+   * Constructs a new User.
+   *
+   * @param id the ID of this User
+   * @param name the username of this User
+   * @param hashedPassword the hashed password of this User
+   * @param creation the creation time of this User
+   * @param blocked whether or not the user is blocked
+   */
+  public User(UUID id, String name, String hashedPassword, Instant creation, boolean blocked) {
     this.id = id;
     this.name = name;
-    this.password = password;
+    this.hashedPassword = hashedPassword;
     this.creation = creation;
+    this.blocked = blocked;
+  }
+
+  /** Returns a new user that is the same as the old user, but is blocked. */
+  public static User blockUser(User original) {
+    return new User(original.id, original.name, original.hashedPassword, original.creation, true);
+  }
+
+  /** Returns a new user that is the same as the old user, but is not blocked. */
+  public static User unblockUser(User original) {
+    return new User(original.id, original.name, original.hashedPassword, original.creation, false);
+  }
+
+
+  /** Edits the password for a particular user, returns a new user. */
+  public static User resetPassword(User original, String newHashedPassword) {
+    return new User(original.id, original.name, newHashedPassword, original.creation, original.blocked);
   }
 
   /** Returns the ID of this User. */
@@ -51,11 +82,15 @@ public class User {
 
   /** Returns the password of this User. */
   public String getPassword() {
-    return password;
+    return hashedPassword;
   }
 
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  public boolean isBlocked() {
+    return blocked;
   }
 }

@@ -27,18 +27,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet class responsible for the conversations page. */
-public class ConversationServlet extends HttpServlet {
+/** Absract class responsible for common functionality in all Admin pages. */
+public abstract class BaseAdminServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
-  private UserStore userStore;
+  protected UserStore userStore;
 
   /** Store class that gives access to Conversations. */
-  private ConversationStore conversationStore;
+  protected ConversationStore conversationStore;
+
+  private static final String LOGIN_URL = "/login";
+  private static final String CONVERSATION_URL = "/conversations";
+
+  /** Special magic username that allows access. */
+  private static final String ADMIN_USER = "admin";
 
   /**
-   * Set up state for handling conversation-related requests. This method is only called when
-   * running in a server, not when running in a test.
+   * Set up state for handling admin-related requests. This basically means
+   * we need everything. Not called in unit tests, which is a bit troubling.
    */
   @Override
   public void init() throws ServletException {
@@ -63,17 +69,44 @@ public class ConversationServlet extends HttpServlet {
     this.conversationStore = conversationStore;
   }
 
+  protected boolean userIsValid(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    String username = (String) request.getSession().getAttribute("user");
+    if (username == null) {
+      // user is not logged in, so force them into that first.
+      response.sendRedirect(LOGIN_URL);
+      return false;
+    } else if (!ADMIN_USER.equals(username)) {
+      response.sendRedirect(CONVERSATION_URL);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   /**
-   * This function fires when a user navigates to the conversations page. It gets all of the
-   * conversations from the model and forwards to conversations.jsp for rendering the list.
+   * Functionality that an implementation class provides to fulfill a GET command.
+   */
+  protected abstract void onValidatedGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException;
+
+  /**
+   * Functionality that an implementation class provides to fulfill a POST command.
+   */
+  protected abstract void onValidatedPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException;
+
+  /**
+   * This function fires when a user navigates to the admin page. It gets all of the
+   * conversations from the model and forwards to admin.jsp for rendering the list.
+   * Note that this needs to gate on user.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-	/* ISSUE HERE */
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
-    request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+    if (userIsValid(request, response)) {
+      onValidatedGet(request, response);
+    }
   }
 
   /**
@@ -84,40 +117,8 @@ public class ConversationServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-
-    String username = (String) request.getSession().getAttribute("user");
-    if (username == null) {
-      // user is not logged in, don't let them create a conversation
-      response.sendRedirect("/conversations");
-      return;
+    if (userIsValid(request, response)) {
+      onValidatedPost(request, response);
     }
-
-    User user = userStore.getUser(username);
-    if (user == null) {
-      // user was not found, don't let them create a conversation
-      System.out.println("User not found: " + username);
-      response.sendRedirect("/conversations");
-      return;
-    }
-
-    String conversationTitle = request.getParameter("conversationTitle");
-    if (!conversationTitle.matches("[\\w*]*")) {
-      request.setAttribute("error", "Please enter only letters and numbers.");
-      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
-      return;
-    }
-
-    if (conversationStore.isTitleTaken(conversationTitle)) {
-      // conversation title is already taken, just go into that conversation instead of creating a
-      // new one
-      response.sendRedirect("/chat/" + conversationTitle);
-      return;
-    }
-
-    Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
-
-    conversationStore.addConversation(conversation);
-    response.sendRedirect("/chat/" + conversationTitle);
   }
 }

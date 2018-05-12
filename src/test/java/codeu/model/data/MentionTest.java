@@ -1,9 +1,9 @@
-// Copyright 2017 Google Inc.
-
 package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class MentionTest {
 	@Test
@@ -17,7 +17,7 @@ public class MentionTest {
 
 		Mention mention = new Mention(idOfMention, userWhoWasMentioned, userWhoDidTheMentioning, start, end,
 				creationTime);
-		Assert.assertEquals(idOfMention, mention.getIdOfMention());
+		Assert.assertEquals(idOfMention, mention.getId());
 		Assert.assertEquals(userWhoWasMentioned, mention.getUserWhoWasMentioned());
 		Assert.assertEquals(userWhoDidTheMentioning, mention.getUserWhoDidTheMentioning());
 		Assert.assertEquals(start, mention.getStart());

@@ -75,7 +75,7 @@ public class MentionStore {
 	 */
 	public Mention getMentionById(UUID id) {
 		for (Mention mention : mentions) {
-			if (mention.getIdOfMention().equals(id)) {
+			if (mention.getId().equals(id)) {
 				return mention;
 			}
 		}
@@ -87,7 +87,7 @@ public class MentionStore {
 	 * application.
 	 */
 	public void addMention(Mention mention) {
-		Mention original = getMentionID(mention.getIdOfMention());
+		Mention original = getMentionById(mention.getId());
 		if (original != null) {
 			mentions.remove(original);
 		}
@@ -101,7 +101,7 @@ public class MentionStore {
 		List<Mention> mentionsInConversation = new ArrayList<>();
 
 		for (Mention mention : mentions) {
-			if (mention.getIdOfMention().equals(messageId)) {
+			if (mention.getId().equals(messageId)) {
 				mentionsInConversation.add(mention);
 			}
 		}

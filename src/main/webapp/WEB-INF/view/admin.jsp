@@ -15,6 +15,7 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.User" %>
 
 <!DOCTYPE html>
 <html>
@@ -26,38 +27,49 @@
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <h1>New Conversation</h1>
-      <form action="/conversations" method="POST">
-          <div class="form-group">
-            <label class="form-control-label">Title:</label>
-          <input type="text" name="conversationTitle">
-        </div>
-
-        <button type="submit">Create</button>
-      </form>
-
-      <hr/>
-    <% } %>
-
     <h1>Conversations</h1>
 
     <%
-    List<Conversation> conversations =
-      (List<Conversation>) request.getAttribute("conversations");
-    if(conversations == null || conversations.isEmpty()){
+    List<Conversation> conversations = (List<Conversation>) request.getAttribute("conversations");
+    if (conversations == null || conversations.isEmpty()) {
     %>
-      <p>Create a conversation to get started.</p>
-    <%
-    }
-    else{
-    %>
+      <p>There are <i>no</i> conversations!</p>
+    <% } else { %>
       <ul class="mdl-list">
     <%
-      for(Conversation conversation : conversations){
+      for(Conversation conversation : conversations) {
     %>
-      <li><a href="/chat/<%= conversation.getTitle() %>">
-        <%= conversation.getTitle() %></a></li>
+      <li>
+        <a href="/admin/conversation?conversation=<%= conversation.getTitle() %>">
+          <%= conversation.getTitle() %>
+	</a>
+      </li>
+    <%
+      }
+    %>
+      </ul>
+
+    <%
+    }
+    %>
+
+    <h1>Users</h1>
+
+    <%
+    List<User> users = (List<User>) request.getAttribute("users");
+    if (users == null || users.isEmpty()) {
+    %>
+    <p>There are <i>no</i>users, which is weird, because how could you see this page?</p>
+    <% } else { %>
+      <ul class="mdl-list">
+    <%
+      for (User user : users) {
+    %>
+      <li>
+        <a href="/admin/user?username=<%= user.getName() %>">
+          <%= user.getName() %>
+	</a>
+      </li>
     <%
       }
     %>
@@ -65,7 +77,7 @@
     <%
     }
     %>
-    <hr/>
+    
   </div>
 </body>
 </html>

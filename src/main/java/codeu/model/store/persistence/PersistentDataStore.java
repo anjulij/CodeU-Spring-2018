@@ -190,12 +190,7 @@ public class PersistentDataStore {
 				int start = Integer.parseInt((String) entity.getProperty("start"));
 				int end = Integer.parseInt((String) entity.getProperty("end"));
 				Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-				// Note that any mentions created prior to this point will not be
-				// blocked, because
-				// this fails open.
-				boolean blocked = Boolean.parseBoolean((String) entity.getProperty("blocked"));
-
-				Mention mention = new User(uuid, userWhoWasMentioned,userWhoDidTheMentioning,start,end,creation_time, blocked);
+				Mention mention = new Mention(uuid, userWhoWasMentioned,userWhoDidTheMentioning,start,end,creationTime);
 				mentions.add(mention);
 			} catch (Exception e) {
 				// In a production environment, errors should be very rare.
@@ -245,7 +240,7 @@ public class PersistentDataStore {
 
 	/** Write a Mention object to the Datastore service. */
 	public void writeThrough(Mention mention) {
-		Entity mentionEntity = new Entity("chat-mentions", mention.getIdOfMention().toString());
+		Entity mentionEntity = new Entity("chat-mentions", mention.getId().toString());
 		mentionEntity.setProperty("uuid", mention.getId().toString());
 		mentionEntity.setProperty("userWhoWasMentioned", mention.getUserWhoWasMentioned().toString());
 		mentionEntity.setProperty("userWhoDidTheMentioning", mention.getUserWhoDidTheMentioning().toString());

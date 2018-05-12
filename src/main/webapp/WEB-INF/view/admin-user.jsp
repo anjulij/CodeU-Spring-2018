@@ -13,28 +13,44 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+<%@ page import="codeu.model.data.User" %>
+
 <!DOCTYPE html>
 <html>
 <%@ include file = "../../header.jsp" %>
 <body>
-
   <div id="container">
-    <h1>Login</h1>
 
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-   <form action="/login" method="POST">
-     <label for="username">Username: </label>
-     <input type="text" name="username" id="username">
-     <br/>
-     <label for="password">Password: </label>
-     <input type="password" name="password" id="password">
-     <br/><br/>
-     <button type="submit">Login</button>
-   </form>
-   Don't have a login? <a href="/register">Register</a>!
- </div>
+    <h1>The Esteemed User</h1>
+
+    <%
+      User user = (User) request.getAttribute("userToBeShown");
+      if (user == null) {
+    %>
+      <p>User?! What user? We don't have no stinkin' user!</p>
+    <%
+      } else {
+    %>
+      <form method="POST">
+        <ul class="mdl-list">
+          <li>User: <%= user.getName() %> |
+            <% if (user.isBlocked()) { %>
+              <input type="submit" name="action" value="Unblock">
+            <% } else { %>
+              <input type="submit" name="action" value="Block">
+            <% } %>
+          </li> 
+          <li>ID: <%= user.getId() %></li>
+	  <li>Reset password: <input type="text" name="new_password"><input type="submit" name="action" value="Reset"></li>
+        </ul>
+      </form>
+    <%
+    }
+    %>
+  </div>
 </body>
 </html>
