@@ -64,10 +64,10 @@ public class User {
     return new User(original.id, original.name, original.hashedPassword, original.creation, false);
   }
 
-
   /** Edits the password for a particular user, returns a new user. */
   public static User resetPassword(User original, String newHashedPassword) {
-    return new User(original.id, original.name, newHashedPassword, original.creation, original.blocked);
+    return new User(
+        original.id, original.name, newHashedPassword, original.creation, original.blocked);
   }
 
   /** Returns the ID of this User. */

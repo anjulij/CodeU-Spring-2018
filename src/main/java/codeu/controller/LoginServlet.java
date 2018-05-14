@@ -17,13 +17,10 @@ package codeu.controller;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the login page. */
@@ -39,7 +36,8 @@ public class LoginServlet extends HttpServlet {
     request.getRequestDispatcher(SELF_URL).forward(request, response);
   }
 
-  private static void setErrorAndRedirect(HttpServletRequest request, HttpServletResponse response, String error)
+  private static void setErrorAndRedirect(
+      HttpServletRequest request, HttpServletResponse response, String error)
       throws IOException, ServletException {
     request.setAttribute("error", error);
     redirectToSelf(request, response);
@@ -86,22 +84,22 @@ public class LoginServlet extends HttpServlet {
       setErrorAndRedirect(request, response, "Missing username or password.");
     } else if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      
+
       // User has entered the correct password.
       // TODO(someone): add encryption to this, because this is terrible.
-      if(BCrypt.checkpw(password, user.getPassword())) {
+      if (BCrypt.checkpw(password, user.getPassword())) {
         if (user.isBlocked()) {
-	  setErrorAndRedirect(request, response, "You have been blocked. Bummer.");
-	} else {
+          setErrorAndRedirect(request, response, "You have been blocked. Bummer.");
+        } else {
           // At last, success!
           request.getSession().setAttribute("user", username);
           response.sendRedirect("admin".equals(username) ? "/admin" : "/conversations");
-	}
+        }
       } else {
-	setErrorAndRedirect(request, response, "Invalid password.");
+        setErrorAndRedirect(request, response, "Invalid password.");
       }
     } else {
-      setErrorAndRedirect(request, response, "That username was not found.");   
+      setErrorAndRedirect(request, response, "That username was not found.");
     }
   }
 }

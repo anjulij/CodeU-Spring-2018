@@ -42,7 +42,7 @@ public class Conversation {
     this.owner = owner;
     this.creation = creation;
     this.title = title;
-    this.muted = muted ;
+    this.muted = muted;
   }
 
   /**
