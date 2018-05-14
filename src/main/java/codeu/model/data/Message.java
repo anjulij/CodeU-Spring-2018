@@ -41,7 +41,6 @@ public class Message {
     this.content = content;
     this.creation = creation;
   }
-
   /** Returns the ID of this Message. */
   public UUID getId() {
     return id;
@@ -66,8 +65,4 @@ public class Message {
   public Instant getCreationTime() {
     return creation;
   }
-
-
-
-
 }
