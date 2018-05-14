@@ -221,6 +221,7 @@ public class ChatServlet extends HttpServlet {
 
     if(!(userMentionedID == null)){
       mention = new Mention(
+              UUID.randomUUID(),
               userMentionedID,
               m.getAuthorId(),
               start,
