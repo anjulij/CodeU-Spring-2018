@@ -55,4 +55,6 @@ public class Mention {
   }
 	/**Returns the message that the mention is in */
 	public Message getMessage(){return message;}
+
+
 }
