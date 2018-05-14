@@ -105,7 +105,7 @@ public class ChatServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user submits the form on the chat page. It gets the logged-in
+   * This function fires when a user submits the form on the chat page. It also gets the logged-in
    * username from the session, the conversation title from the URL, and the chat message from the
    * submitted form data. It creates a new Message from that data, adds it to the model, and then
    * redirects back to the chat page.
