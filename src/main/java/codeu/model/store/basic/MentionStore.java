@@ -2,6 +2,7 @@
 
 package codeu.model.store.basic;
 
+import codeu.model.data.Conversation;
 import codeu.model.data.Mention;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
@@ -42,6 +43,11 @@ public class MentionStore {
 
   /** The in-memory list of Mentions. */
   private List<Mention> mentions;
+  
+  /** Access the current set of mentions known to the application. */
+  public List<Mention> getAllMentions() {
+    return mentions;
+  }
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MentionStore(PersistentStorageAgent persistentStorageAgent) {

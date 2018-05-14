@@ -15,7 +15,9 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Mention;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MentionStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,10 @@ public class ActivityServlet extends HttpServlet {
 
   /** Store class that gives access to Conversations. */
   private ConversationStore conversationStore;
+  
+  /** Store class that gives access to Mentions. */
+  private MentionStore mentionStore;
+  
 
   /**
    * Set up state for handling conversation-related requests. This method is only called when
@@ -44,6 +50,7 @@ public class ActivityServlet extends HttpServlet {
     super.init();
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
   }
 
   /**
@@ -61,6 +68,10 @@ public class ActivityServlet extends HttpServlet {
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
   }
+  
+  void setMentionStore(MentionStore mentionStore) {
+	this.mentionStore = mentionStore;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,7 +79,10 @@ public class ActivityServlet extends HttpServlet {
 
     List<Conversation> conversations =
         new ArrayList<Conversation>(conversationStore.getAllConversations());
+    List<Mention> mentions = 
+    	new ArrayList<Mention>(mentionStore.getAllMentions());
     Collections.sort(conversations, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    Collections.sort(mentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activity.jsp").forward(request, response);
   }
