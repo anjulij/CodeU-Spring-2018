@@ -15,7 +15,7 @@ public class MentionList {
         userStore = this.userStore;
     }
 
-    public List<Mention> getMentions(Message message){
+    public List<Mention> getList(){
         List<Mention> mentions = new ArrayList<>();
         String content = message.getContent();
 
