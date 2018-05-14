@@ -1,20 +1,18 @@
 package codeu.model.data;
 
 import codeu.model.store.basic.UserStore;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class MentionList {
     private Message message;
-    private  UserStore userStore;
+    private UserStore userStore;
 
     public MentionList(Message message, UserStore userStore){
         message = this.message;
         userStore = this.userStore;
     }
-
     public List<Mention> getList(){
         List<Mention> mentions = new ArrayList<>();
         String content = message.getContent();
@@ -46,15 +44,11 @@ public class MentionList {
                         }
                         inMention = false;
                     }
-
-
                 }
             }
         }
-
         return mentions;
     }
-
     public Mention getMention(int s, int e, Message m){
         String content = m.getContent();
         int start = s;
@@ -82,7 +76,6 @@ public class MentionList {
         }
         return mention;
     }
-
     //Could be moved to UserStore
     public UUID searchForUser(String username){
         UUID userID = null;

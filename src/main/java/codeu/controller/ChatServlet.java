@@ -159,7 +159,5 @@ public class ChatServlet extends HttpServlet {
 
     //Get mentions in an individual single message
     MentionList mentionList = new MentionList(message, userStore);
-
   }
-
 }

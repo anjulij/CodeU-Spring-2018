@@ -1,8 +1,6 @@
 package codeu.model.data;// Copyright 2017 Google Inc.
-
 import java.time.Instant;
 import java.util.UUID;
-
 
 /** The Mention class represent just a single mention and collects the data for a single mention. */
 public class Mention {
@@ -55,6 +53,4 @@ public class Mention {
   }
 	/**Returns the message that the mention is in */
 	public Message getMessage(){return message;}
-
-
 }
