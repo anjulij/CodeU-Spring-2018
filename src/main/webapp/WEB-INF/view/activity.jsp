@@ -54,6 +54,8 @@
         <a href="/chat/<%= conversation.getTitle()%>">
         <%= conversation.getTitle() %></a>
       </li>
+      <li>
+      	
       
     <%
       }
