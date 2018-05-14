@@ -167,44 +167,69 @@ public class ChatServlet extends HttpServlet {
     List<Mention> mentions = new ArrayList<>();
     String content = message.getContent();
 
+    Mention mention = null;
+    boolean inMention = false;
+    int startOfMention = -1;
+    int endOfMention = -1;
+
     for (int i = 0; i < content.length(); i++) {
-      if(content.charAt(i) == ' ' && content.charAt(i+1) == '@'){
-        int mentionStart = i+1+1;
-        mentions.add(getMention(mentionStart,message));
+
+      if(content.charAt(i)=='@'){
+        if(inMention){
+          inMention = false;
+          break;
+        }
+        else if(i==0 || content.charAt(i-1)==' '){
+          inMention = true;
+          startOfMention = i;
+        }
+
+        else if(content.charAt(i) == ' '){
+          if(inMention){
+            endOfMention = i;
+
+            mention = getMention(startOfMention, endOfMention, message);
+            if(!(mention == null)){
+              mentions.add(mention);
+            }
+            inMention = false;
+          }
+
+
+        }
       }
     }
 
     return mentions;
   }
 
-  public Mention getMention(int s, Message m){
+  public Mention getMention(int s, int e, Message m){
     String content = m.getContent();
     int start = s;
-    int end = 0;
+    int end = e;
     StringBuilder sb = new StringBuilder();
 
-    for (int i = s; i < content.length(); i++) {
-      if(content.charAt(i) == ' ' || i == content.length()-1){
-        end = i;
-        break;
-      }else{
+    Mention mention = null;
+
+    for (int i = s; i < end; i++) {
         sb.append(content.charAt(i));
-      }
     }
 
     String userMentioned = sb.toString();
     UUID userMentionedID = searchForUser(userMentioned);
-    Mention mention = new Mention(userMentionedID,
-            m.getAuthorId(),
-            start,
-            end,
-            m.getCreationTime(),
-            m);
+
+    if(!(userMentionedID == null)){
+      mention = new Mention(userMentionedID,
+              m.getAuthorId(),
+              start,
+              end,
+              m.getCreationTime(),
+              m);
+    }
     return mention;
   }
 
   //Could be moved to UserStore
-  //TODO: What to do if user isn't found
   public UUID searchForUser(String username){
     UUID userID = null;
 
