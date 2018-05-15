@@ -36,7 +36,7 @@
     <div id="container">
       <h1>Activity</h1>
       <p>Here's everything that's happened on the site so far!</p>
-      <div style="height:600px;width:750px;border:5px solid #ccc;overflow:auto;">    
+      <div style="height:600px;width:750px;border:5px solid white;overflow:auto;">    
 	    <%
 	    List<Mention> mentions = (List<Mention>) request.getAttribute("mentions");
 	    List<Conversation> conversations =
