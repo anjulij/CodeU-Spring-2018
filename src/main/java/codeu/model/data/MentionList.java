@@ -21,7 +21,6 @@ public class MentionList {
         boolean inMention = false;
         int startOfMention = -1;
         int endOfMention = -1;
-
         for (int i = 0; i < content.length(); i++) {
 
             if(content.charAt(i)=='@'){
