@@ -88,10 +88,15 @@ public class ActivityServlet extends HttpServlet {
     User user = userStore.getUser(username);
     
     /* Get all mentions for the user and by the user*/
-    List<Mention> mentionsForUser = new ArrayList<Mention>(mentionStore.getMentionsForUserId(user.getId()));
-    List<Mention> mentionsByUser = new ArrayList<Mention>(mentionStore.getMentionsByUserId(user.getId()));
-    List<Mention> allMentions = new ArrayList<Mention>(mentionsForUser);
-    mentionsForUser.addAll(mentionsByUser);
+    List<Mention> allMentions = new ArrayList<Mention>();
+    if (mentionStore.getMentionsForUserId(user.getId()) != null) {
+    	List<Mention> mentionsForUser = new ArrayList<Mention>(mentionStore.getMentionsForUserId(user.getId()));
+    	allMentions.addAll(mentionsForUser);
+    }
+    if (mentionStore.getMentionsByUserId(user.getId()) != null) {
+    	List<Mention> mentionsByUser = new ArrayList<Mention>(mentionStore.getMentionsByUserId(user.getId())); 
+        allMentions.addAll(mentionsByUser);
+    }
     Collections.sort(allMentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
     
     request.setAttribute("mentions", allMentions);
