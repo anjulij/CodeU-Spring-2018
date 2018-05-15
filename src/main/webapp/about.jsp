@@ -25,17 +25,19 @@
       <h2>The Team: Unnamed Ones</h2>
       <ul>
         <li><strong>Anjuli:</strong> Xavier Univeristy of Louisiana</li>
-        <li><strong>Emmanuel:</strong></li>
         <li><strong>Esther:</strong> Duke University</li>
         <li><strong>Jorge:</strong> The University of Texas at Austin</li>
       </ul>
       <h2>Features:</h2>
       <ul>
-        <li>Coming soon...</li>
+        <li>Activity page</li>
+        <li>@Mentions</li>
       </ul>
       <h2>Improvements:</h2>
       <ul>
-        <li>Coming soon...</li>
+        <li>Changed colors</li>
+        <li>Password support</li>
+        <li>Encrypted passwords</li>
       </ul>
     </div>
   </div>
