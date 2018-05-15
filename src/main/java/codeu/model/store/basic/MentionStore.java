@@ -2,6 +2,7 @@
 
 package codeu.model.store.basic;
 
+import codeu.model.data.Conversation;
 import codeu.model.data.Mention;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class MentionStore {
 
   /** The in-memory list of Mentions. */
   private List<Mention> mentions;
+  
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MentionStore(PersistentStorageAgent persistentStorageAgent) {
@@ -67,6 +69,37 @@ public class MentionStore {
     }
     return null;
   }
+  
+  /**
+   * Access the current list of mentions by the given user UUID.
+   *
+   * @return an empty list if the user has not mentioned another user.
+   */
+  public List<Mention> getMentionsByUserId(UUID id) {
+	  List<Mention> result = new ArrayList<>();
+	  for (Mention mention : mentions) {
+		  if (mention.getUserWhoDidTheMentioning().equals(id)) {
+			  result.add(mention);
+		  }
+	  }
+	  return result;	  
+  }
+  
+  /**
+   * Access the current list of mentions for the given user UUID.
+   *
+   * @return an empty list if the user has been mentioned by another user.
+   */
+  public List<Mention> getMentionsForUserId(UUID id) {
+	  List<Mention> result = new ArrayList<>();
+	  for (Mention mention : mentions) {
+		  if (mention.getUserWhoWasMentioned().equals(id)) {
+			  result.add(mention);
+		  }
+	  }
+	  return result;
+  }
+  
 
   /** Add/replace a new mention to the current set of mentions known to the application. */
   public void addMention(Mention mention) {

@@ -15,7 +15,10 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Mention;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MentionStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +37,10 @@ public class ActivityServlet extends HttpServlet {
 
   /** Store class that gives access to Conversations. */
   private ConversationStore conversationStore;
+  
+  /** Store class that gives access to Mentions. */
+  private MentionStore mentionStore;
+  
 
   /**
    * Set up state for handling conversation-related requests. This method is only called when
@@ -44,6 +51,7 @@ public class ActivityServlet extends HttpServlet {
     super.init();
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
   }
 
   /**
@@ -61,14 +69,34 @@ public class ActivityServlet extends HttpServlet {
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
   }
+  
+  void setMentionStore(MentionStore mentionStore) {
+	this.mentionStore = mentionStore;
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
+	/* Get the list of all conversations */
     List<Conversation> conversations =
         new ArrayList<Conversation>(conversationStore.getAllConversations());
     Collections.sort(conversations, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    
+    /* Get the current user */
+    String username = (String) request.getSession().getAttribute("user");
+    
+    List<Mention> allMentions = new ArrayList<Mention>();
+    
+    if (username != null) {
+	    User user = userStore.getUser(username);
+	    
+	    /* Get all mentions for the user and by the user*/
+	    allMentions.addAll(mentionStore.getMentionsForUserId(user.getId()));
+	    allMentions.addAll(mentionStore.getMentionsByUserId(user.getId()));
+	    Collections.sort(allMentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    }
+    request.setAttribute("mentions", allMentions);
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activity.jsp").forward(request, response);
   }
