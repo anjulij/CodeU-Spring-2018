@@ -18,6 +18,7 @@ import codeu.model.data.*;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.data.MentionParser;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -158,7 +159,7 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
 
     //Get mentions in an individual single message
-    MentionList mentionList = new MentionList(message, userStore);
+    MentionParser mentionList = new MentionParser(message, userStore);
 
   }
 

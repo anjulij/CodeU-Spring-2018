@@ -6,16 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MentionList {
+public class MentionParser {
     private Message message;
     private  UserStore userStore;
 
-    public MentionList(Message message, UserStore userStore){
+    public MentionParser(Message message, UserStore userStore) {
         message = this.message;
         userStore = this.userStore;
     }
+    
+    public MentionParser createParser(Message message, UserStore userStore) {
+    	return new MentionParser(message, userStore);
+    }
 
-    public List<Mention> getList(){
+    public List<Mention> getMentions() {
         List<Mention> mentions = new ArrayList<>();
         String content = message.getContent();
 
@@ -35,27 +39,22 @@ public class MentionList {
                     inMention = true;
                     startOfMention = i;
                 }
-
-                else if(content.charAt(i) == ' '){
+            } 
+            else if(content.charAt(i) == ' '){
                     if(inMention){
                         endOfMention = i;
-
                         mention = getMention(startOfMention, endOfMention, message);
                         if(!(mention == null)){
                             mentions.add(mention);
                         }
                         inMention = false;
                     }
-
-
-                }
-            }
+             }
         }
-
         return mentions;
     }
 
-    public Mention getMention(int s, int e, Message m){
+    private Mention getMention(int s, int e, Message m) {
         String content = m.getContent();
         int start = s;
         int end = e;
@@ -67,8 +66,9 @@ public class MentionList {
             sb.append(content.charAt(i));
         }
 
-        String userMentioned = sb.toString();
-        UUID userMentionedID = searchForUser(userMentioned);
+        String userNameMentioned = sb.toString();
+        User userMentioned = userStore.getUser(userNameMentioned);
+        UUID userMentionedID = userMentioned.getId();
 
         if(!(userMentionedID == null)){
             mention = new Mention(
@@ -81,19 +81,5 @@ public class MentionList {
                     m);
         }
         return mention;
-    }
-
-    //Could be moved to UserStore
-    public UUID searchForUser(String username){
-        UUID userID = null;
-
-
-        for (User user : userStore.getAllUsers()) {
-            if(username.equalsIgnoreCase(user.getName())){
-                userID = user.getId();
-            }
-        }
-
-        return userID;
     }
 }
