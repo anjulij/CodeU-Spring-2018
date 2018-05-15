@@ -44,10 +44,6 @@ public class MentionStore {
   /** The in-memory list of Mentions. */
   private List<Mention> mentions;
   
-  /** Access the current set of mentions known to the application. */
-  public List<Mention> getAllMentions() {
-    return mentions;
-  }
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MentionStore(PersistentStorageAgent persistentStorageAgent) {
@@ -77,7 +73,7 @@ public class MentionStore {
   /**
    * Access the current list of mentions by the given user UUID.
    *
-   * @return null if the user has not mentioned another user.
+   * @return an empty list if the user has not mentioned another user.
    */
   public List<Mention> getMentionsByUserId(UUID id) {
 	  List<Mention> result = new ArrayList<>();
@@ -86,16 +82,13 @@ public class MentionStore {
 			  result.add(mention);
 		  }
 	  }
-	  if (result.size() > 0) {
-		  return result;
-	  }
-	  return null;	  
+	  return result;	  
   }
   
   /**
    * Access the current list of mentions for the given user UUID.
    *
-   * @return null if the user has been mentioned by another user.
+   * @return an empty list if the user has been mentioned by another user.
    */
   public List<Mention> getMentionsForUserId(UUID id) {
 	  List<Mention> result = new ArrayList<>();
@@ -104,10 +97,7 @@ public class MentionStore {
 			  result.add(mention);
 		  }
 	  }
-	  if (result.size() > 0) {
-		  return result;
-	  }
-	  return null;	    
+	  return result;
   }
   
 

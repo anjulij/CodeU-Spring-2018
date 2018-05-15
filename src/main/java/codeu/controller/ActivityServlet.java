@@ -85,20 +85,17 @@ public class ActivityServlet extends HttpServlet {
     
     /* Get the current user */
     String username = (String) request.getSession().getAttribute("user");
-    User user = userStore.getUser(username);
     
-    /* Get all mentions for the user and by the user*/
     List<Mention> allMentions = new ArrayList<Mention>();
-    if (mentionStore.getMentionsForUserId(user.getId()) != null) {
-    	List<Mention> mentionsForUser = new ArrayList<Mention>(mentionStore.getMentionsForUserId(user.getId()));
-    	allMentions.addAll(mentionsForUser);
-    }
-    if (mentionStore.getMentionsByUserId(user.getId()) != null) {
-    	List<Mention> mentionsByUser = new ArrayList<Mention>(mentionStore.getMentionsByUserId(user.getId())); 
-        allMentions.addAll(mentionsByUser);
-    }
-    Collections.sort(allMentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
     
+    if (username != null) {
+	    User user = userStore.getUser(username);
+	    
+	    /* Get all mentions for the user and by the user*/
+	    allMentions.addAll(mentionStore.getMentionsForUserId(user.getId()));
+	    allMentions.addAll(mentionStore.getMentionsByUserId(user.getId()));
+	    Collections.sort(allMentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    }
     request.setAttribute("mentions", allMentions);
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activity.jsp").forward(request, response);
