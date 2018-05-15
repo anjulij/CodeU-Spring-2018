@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MentionList {
+public class MentionParser {
     private Message message;
     private UserStore userStore;
 
-    public MentionList(Message message, UserStore userStore){
+    private MentionParser(Message message, UserStore userStore){
         message = this.message;
         userStore = this.userStore;
     }
-    public List<Mention> getList(){
+
+    public static MentionParser createParser(Message message, UserStore userStore){
+        return new MentionParser(message, userStore);
+    }
+    public List<Mention> getMentions(){
         List<Mention> mentions = new ArrayList<>();
         String content = message.getContent();
 
@@ -21,6 +25,7 @@ public class MentionList {
         boolean inMention = false;
         int startOfMention = -1;
         int endOfMention = -1;
+        
         for (int i = 0; i < content.length(); i++) {
 
             if(content.charAt(i)=='@'){
@@ -63,7 +68,7 @@ public class MentionList {
         String userMentioned = sb.toString();
         UUID userMentionedID = searchForUser(userMentioned);
 
-        if(!(userMentionedID == null)){
+        if((userMentionedID != null)){
             mention = new Mention(
                     UUID.randomUUID(),
                     userMentionedID,

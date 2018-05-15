@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -158,6 +157,6 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
 
     //Get mentions in an individual single message
-    MentionList mentionList = new MentionList(message, userStore);
+    MentionParser mentionList = new MentionParser(message, userStore);
   }
 }
