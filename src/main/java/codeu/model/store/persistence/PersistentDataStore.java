@@ -182,9 +182,9 @@ public class PersistentDataStore {
         int start = Integer.parseInt((String) entity.getProperty("start"));
         int end = Integer.parseInt((String) entity.getProperty("end"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Mention mention =
-            new Mention(
-                uuid, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime);
+        //Message message = Message.parse((String) entity.getProperty("message"));
+        // TODO: Get message to create mention
+        Mention mention = new Mention(uuid, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime, null);
         mentions.add(mention);
       } catch (Exception e) {
         // In a production environment, errors should be very rare.

@@ -9,7 +9,7 @@ public class MentionParser {
     private Message message;
     private UserStore userStore;
 
-    private MentionParser(Message message, UserStore userStore){
+    private MentionParser(Message message, UserStore userStore) {
         message = this.message;
         userStore = this.userStore;
     }
@@ -17,7 +17,7 @@ public class MentionParser {
     public static MentionParser createParser(Message message, UserStore userStore){
         return new MentionParser(message, userStore);
     }
-    public List<Mention> getMentions(){
+    public List<Mention> getMentions() {
         List<Mention> mentions = new ArrayList<>();
         String content = message.getContent();
 
@@ -37,11 +37,10 @@ public class MentionParser {
                     inMention = true;
                     startOfMention = i;
                 }
-
-                else if(content.charAt(i) == ' '){
+            } 
+            else if(content.charAt(i) == ' '){
                     if(inMention){
                         endOfMention = i;
-
                         mention = getMention(startOfMention, endOfMention, message);
                         if(!(mention == null)){
                             mentions.add(mention);
@@ -50,10 +49,10 @@ public class MentionParser {
                     }
                 }
             }
-        }
         return mentions;
     }
-    public Mention getMention(int s, int e, Message m){
+
+    private Mention getMention(int s, int e, Message m) {
         String content = m.getContent();
         int start = s;
         int end = e;
@@ -65,8 +64,9 @@ public class MentionParser {
             sb.append(content.charAt(i));
         }
 
-        String userMentioned = sb.toString();
-        UUID userMentionedID = searchForUser(userMentioned);
+        String userNameMentioned = sb.toString();
+        User userMentioned = userStore.getUser(userNameMentioned);
+        UUID userMentionedID = userMentioned.getId();
 
         if((userMentionedID != null)){
             mention = new Mention(
