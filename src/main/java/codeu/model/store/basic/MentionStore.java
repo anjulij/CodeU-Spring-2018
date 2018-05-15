@@ -73,6 +73,43 @@ public class MentionStore {
     }
     return null;
   }
+  
+  /**
+   * Access the current list of mentions by the given user UUID.
+   *
+   * @return null if the user has not mentioned another user.
+   */
+  public List<Mention> getMentionsByUserId(UUID id) {
+	  List<Mention> result = new ArrayList<>();
+	  for (Mention mention : mentions) {
+		  if (mention.getUserWhoDidTheMentioning().equals(id)) {
+			  result.add(mention);
+		  }
+	  }
+	  if (result.size() > 0) {
+		  return result;
+	  }
+	  return null;	  
+  }
+  
+  /**
+   * Access the current list of mentions for the given user UUID.
+   *
+   * @return null if the user has been mentioned by another user.
+   */
+  public List<Mention> getMentionsForUserId(UUID id) {
+	  List<Mention> result = new ArrayList<>();
+	  for (Mention mention : mentions) {
+		  if (mention.getUserWhoWasMentioned().equals(id)) {
+			  result.add(mention);
+		  }
+	  }
+	  if (result.size() > 0) {
+		  return result;
+	  }
+	  return null;	    
+  }
+  
 
   /** Add/replace a new mention to the current set of mentions known to the application. */
   public void addMention(Mention mention) {

@@ -16,6 +16,7 @@ package codeu.controller;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.Mention;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MentionStore;
 import codeu.model.store.basic.UserStore;
@@ -77,12 +78,23 @@ public class ActivityServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
+	/* Get the list of all conversations */
     List<Conversation> conversations =
         new ArrayList<Conversation>(conversationStore.getAllConversations());
-    List<Mention> mentions = 
-    	new ArrayList<Mention>(mentionStore.getAllMentions());
     Collections.sort(conversations, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
-    Collections.sort(mentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    
+    /* Get the current user */
+    String username = (String) request.getSession().getAttribute("user");
+    User user = userStore.getUser(username);
+    
+    /* Get all mentions for the user and by the user*/
+    List<Mention> mentionsForUser = new ArrayList<Mention>(mentionStore.getMentionsForUserId(user.getId()));
+    List<Mention> mentionsByUser = new ArrayList<Mention>(mentionStore.getMentionsByUserId(user.getId()));
+    List<Mention> allMentions = new ArrayList<Mention>(mentionsForUser);
+    mentionsForUser.addAll(mentionsByUser);
+    Collections.sort(allMentions, (a, b) -> b.getCreationTime().compareTo(a.getCreationTime()));
+    
+    request.setAttribute("mentions", allMentions);
     request.setAttribute("conversations", conversations);
     request.getRequestDispatcher("/WEB-INF/view/activity.jsp").forward(request, response);
   }
