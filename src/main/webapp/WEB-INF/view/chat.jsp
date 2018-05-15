@@ -29,7 +29,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <link rel="stylesheet" href="/css/main.css">
   <style>
     #chat {
-      background-color: white;
+      background-color: #EFE2BA;
       height: 500px;
       overflow-y: scroll
     }

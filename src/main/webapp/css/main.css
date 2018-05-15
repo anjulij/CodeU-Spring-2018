@@ -15,16 +15,16 @@
 
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: "custom font";
   line-height: 1.6;
   font-size: 18px;
   line-height: 1.6;
-  color: #5c6a8c;
-  background-color: #e8f0f2;
+  color: #4056A1;
+  background-color: #EFE2BA;
 }
 
 nav {
-  background-color: #434468;
+  background-color: #4056A1;
 }
 
 nav a {
@@ -46,7 +46,7 @@ nav a {
 }
 
 h1 {
-  color: #5c6a8c;
+  color: #F13C20;
 }
 
 input {
@@ -55,4 +55,10 @@ input {
 
 button {
   font-size: 18px;
+}
+
+@font-face {
+	font-family: "custom font";
+	src: url(MonoSocialIconsFont-1.10.ttf);
+	font-weight: normal;
 }
