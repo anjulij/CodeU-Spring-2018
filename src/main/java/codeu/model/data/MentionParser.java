@@ -51,7 +51,6 @@ public class MentionParser {
             }
         return mentions;
     }
-
     private Mention getMention(int s, int e, Message m) {
         String content = m.getContent();
         int start = s;
@@ -76,21 +75,8 @@ public class MentionParser {
                     start,
                     end,
                     m.getCreationTime(),
-                    m);
+                    m.getId());
         }
         return mention;
-    }
-    //Could be moved to UserStore
-    public UUID searchForUser(String username){
-        UUID userID = null;
-
-
-        for (User user : userStore.getAllUsers()) {
-            if(username.equalsIgnoreCase(user.getName())){
-                userID = user.getId();
-            }
-        }
-
-        return userID;
     }
 }

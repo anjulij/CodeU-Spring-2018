@@ -10,21 +10,21 @@ public class Mention {
   	private final int start; // represents the lower bound of the number of String Indices
   	private final int end; // represents the upper bound of the number of String Indices
   	private final Instant creationTime; // represents the creation time of this Mention
-	private final Message message; //this is the message which contains the mention
+	private final UUID messageId; //this is the message which contains the mention
   public Mention(
       UUID id,
       UUID userWhoWasMentioned,
       UUID userWhoDidTheMentioning,
       int start,
       int end,
-      Instant creationTime, Message message) {
+      Instant creationTime, UUID messageId) {
     this.id = id;
     this.userWhoWasMentioned = userWhoWasMentioned;
     this.userWhoDidTheMentioning = userWhoDidTheMentioning;
     this.start = start;
     this.end = end;
     this.creationTime = creationTime;
-    this.message = message;
+    this.messageId = messageId;
   }
   /** Returns id of the mention. */
   public UUID getId() {
@@ -52,5 +52,7 @@ public class Mention {
     return creationTime;
   }
 	/**Returns the message that the mention is in */
-	public Message getMessage(){return message;}
+	public UUID getMessageId(){return messageId;}
+
+	//TODO: Create builder
 }
