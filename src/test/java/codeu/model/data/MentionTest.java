@@ -17,14 +17,10 @@ public class MentionTest {
 		int start = 0;
 		int end = 4;
 		Instant creationTime = Instant.now();
+		UUID messageId = UUID.randomUUID();
 
-		UUID conversationID = UUID.randomUUID();
-		UUID messageID = UUID.randomUUID();
-		String content = "asdjsldj2jlnncc0ie2";
-
-		Message message = new Message(messageID, conversationID, userWhoDidTheMentioning, content, creationTime);
 		Mention mention = new Mention(
-		        idOfMention, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime, message);
+		        idOfMention, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime, messageId);
 
 		Assert.assertEquals(idOfMention, mention.getId());
         Assert.assertEquals(userWhoWasMentioned, mention.getUserWhoWasMentioned());
