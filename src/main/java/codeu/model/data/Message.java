@@ -25,7 +25,6 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-
   /**
    * Constructs a new Message.
    *
@@ -42,7 +41,6 @@ public class Message {
     this.content = content;
     this.creation = creation;
   }
-
   /** Returns the ID of this Message. */
   public UUID getId() {
     return id;

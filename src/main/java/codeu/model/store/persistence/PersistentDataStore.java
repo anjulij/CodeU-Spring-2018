@@ -165,7 +165,6 @@ public class PersistentDataStore {
    *     during the load from the Datastore service
    */
   public List<Mention> loadMentions() throws PersistentDataStoreException {
-
     List<Mention> mentions = new ArrayList<>();
 
     // Retrieve all mentions from the datastore.
@@ -182,9 +181,8 @@ public class PersistentDataStore {
         int start = Integer.parseInt((String) entity.getProperty("start"));
         int end = Integer.parseInt((String) entity.getProperty("end"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Mention mention =
-            new Mention(
-                uuid, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime);
+        UUID messageId = UUID.fromString((String) entity.getProperty("messageId"));
+        Mention mention = new Mention(uuid, userWhoWasMentioned, userWhoDidTheMentioning, start, end, creationTime, messageId);
         mentions.add(mention);
       } catch (Exception e) {
         // In a production environment, errors should be very rare.
@@ -195,7 +193,6 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
     return mentions;
   }
 
@@ -239,9 +236,10 @@ public class PersistentDataStore {
     mentionEntity.setProperty("userWhoWasMentioned", mention.getUserWhoWasMentioned().toString());
     mentionEntity.setProperty(
         "userWhoDidTheMentioning", mention.getUserWhoDidTheMentioning().toString());
-    mentionEntity.setProperty("start", mention.getStart());
-    mentionEntity.setProperty("end", mention.getEnd());
+    mentionEntity.setProperty("start", Integer.toString(mention.getStart()));
+    mentionEntity.setProperty("end", Integer.toString(mention.getEnd()));
     mentionEntity.setProperty("creation_time", mention.getCreationTime().toString());
+    mentionEntity.setProperty("messageId", mention.getMessageId().toString());
     datastore.put(mentionEntity);
   }
 }
