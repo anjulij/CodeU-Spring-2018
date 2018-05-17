@@ -15,12 +15,13 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
-<%@ page import="codeu.model.data.Mention" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.User" %>
-<%@ page import="codeu.model.store.basic.MentionStore" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.data.Mention" %>
 <%@ page import="codeu.model.store.basic.ConversationStore" %>
+<%@ page import="codeu.model.store.basic.MessageStore" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="codeu.model.store.basic.MentionStore" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.time.format.FormatStyle" %>
@@ -38,8 +39,16 @@
       <div style="height:600px;width:750px;border:5px solid white;overflow:auto;">    
 	    <%
 	    List<Object> data = (List<Object>) request.getAttribute("data");
+	    ConversationStore conversationStore = (ConversationStore) 
+	    		request.getAttribute("conversationStore");
+	    MessageStore messageStore = (MessageStore) 
+	    		request.getAttribute("messageStore");
+	    UserStore userStore = (UserStore) 
+	    		request.getAttribute("userStore");
+	    MentionStore mentionStore = (MentionStore) 
+	    		request.getAttribute("mentionStore");
 	    DateTimeFormatter formatter =
-			    DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+			    DateTimeFormatter.ofLocalizedDateTime (FormatStyle.SHORT )
 	            .withLocale( Locale.US )
 	            .withZone( ZoneId.systemDefault() );
 	    %>
@@ -53,7 +62,7 @@
           %>
 	        <li>
 	          <%= formatter.format(conversation.getCreationTime()) %>: 
-	          <%= UserStore.getInstance().getUser(conversation.getOwnerId()).getName() %> 
+	          <%= userStore.getUser(conversation.getOwnerId()).getName() %> 
 	          created a new conversation:
 	          <a href="/chat/<%= conversation.getTitle() %>">
 	          <%= conversation.getTitle() %></a>
@@ -64,12 +73,13 @@
              to the chat with a title, and the message content*/
     	  else if (obj instanceof Message){
             Message message = (Message) obj; 
-    	    Conversation conversation = ConversationStore.getInstance().
-    				 getConversationWithId(message.getConversationId());
+    	    Conversation conversation = conversationStore.getConversationWithId
+    	    		(message.getConversationId());
           %>
   	        <li>
   	          <%= formatter.format(message.getCreationTime()) %>:
-              <%= UserStore.getInstance().getUser(message.getAuthorId()).getName() %> sent a message in 
+              <%= userStore.getUser(message.getAuthorId()).getName() %> 
+              sent a message in 
               <a href="/chat/<%= conversation.getTitle() %>">
               <%= conversation.getTitle() %></a>:
               <%= message.getContent() %>     
@@ -90,11 +100,18 @@
            in Mention */
     	 else{
     	   Mention mention = (Mention) obj;
+    	   Message message = messageStore.getMessageWithId(mention.getMessageId());
+    	   Conversation conversation = conversationStore.getConversationWithId
+  				 (message.getConversationId());
   	     %>
   	       <li>
             <%= formatter.format(mention.getCreationTime()) %>:
-            <%= UserStore.getInstance().getUser(mention.getUserWhoDidTheMentioning()).getName() %> mentioned
-            <%= UserStore.getInstance().getUser(mention.getUserWhoWasMentioned()).getName() %>
+            <%= userStore.getUser(mention.getUserWhoDidTheMentioning()).getName() %> 
+            mentioned
+            <%= userStore.getUser(mention.getUserWhoWasMentioned()).getName() %> in 
+            <a href="/chat/<%= conversation.getTitle() %>">
+            <%= conversation.getTitle() %></a>:
+            <%= message.getContent() %>   
           </li>
          <%
   	    }

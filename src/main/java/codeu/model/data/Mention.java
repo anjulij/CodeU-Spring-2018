@@ -26,6 +26,7 @@ public class Mention {
     this.creationTime = creationTime;
     this.messageId = messageId;
   }
+  
   /** Returns id of the mention. */
   public UUID getId() {
     return id;
@@ -51,8 +52,11 @@ public class Mention {
   public Instant getCreationTime() {
     return creationTime;
   }
-	/**Returns the message that the mention is in */
-	public UUID getMessageId(){return messageId;}
+  
+  /**Returns the message that the mention is in */
+  public UUID getMessageId(){
+    return messageId;
+  }
 
 	//TODO: Create builder
 }

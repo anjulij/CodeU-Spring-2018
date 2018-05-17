@@ -14,6 +14,7 @@
 
 package codeu.model.store.basic;
 
+import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
@@ -105,8 +106,17 @@ public class MessageStore {
         messagesInConversation.add(message);
       }
     }
-
     return messagesInConversation;
+  }
+  
+  /** Find and return the Message with the given id. */
+  public Message getMessageWithId(UUID id) {
+	for (Message message : messages) {
+      if (message.getId().equals(id)) {
+    	  return message;
+      }
+	}
+	return null;
   }
 
   /** Sets the List of Messages stored by this MessageStore. */

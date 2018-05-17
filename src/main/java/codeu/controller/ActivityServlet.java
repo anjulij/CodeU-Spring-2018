@@ -35,19 +35,19 @@ import java.time.Instant;
 /** Servlet class responsible for the activity page. */
 public class ActivityServlet extends HttpServlet {
 
-	/** Store class that gives access to Users. */
-	private UserStore userStore;
-
 	/** Store class that gives access to Conversations. */
 	private ConversationStore conversationStore;
 
-	/** Store class that gives access to Mentions. */
-	private MentionStore mentionStore;
-
 	/** Store class that gives access to Messages. */
 	private MessageStore messageStore;
-
-
+	
+	/** Store class that gives access to Users. */
+	private UserStore userStore;
+	
+	/** Store class that gives access to Mentions. */
+	private MentionStore mentionStore;
+	
+	
 	/**
 	 * Set up state for handling conversation-related requests. This method is only called when
 	 * running in a server, not when running in a test.
@@ -55,18 +55,10 @@ public class ActivityServlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		setUserStore(UserStore.getInstance());
 		setConversationStore(ConversationStore.getInstance());
-		setMentionStore(MentionStore.getInstance());
 		setMessageStore(MessageStore.getInstance());
-	}
-
-	/**
-	 * Sets the UserStore used by this servlet. This function provides a common setup method for use
-	 * by the test framework or the servlet's init() function.
-	 */
-	void setUserStore(UserStore userStore) {
-		this.userStore = userStore;
+		setUserStore(UserStore.getInstance());
+		setMentionStore(MentionStore.getInstance());
 	}
 
 	/**
@@ -78,19 +70,27 @@ public class ActivityServlet extends HttpServlet {
 	}
 
 	/**
-	 * Sets the MentionsStore used by this servlet. This function provides a common setup method
-	 * for use by the test framework or the servlet's init() function.
-	 */
-	void setMentionStore(MentionStore mentionStore) {
-		this.mentionStore = mentionStore;
-	}
-
-	/**
 	 * Sets the MessageStore used by this servlet. This function provides a common setup method
 	 * for use by the test framework or the servlet's init() function.
 	 */
 	void setMessageStore(MessageStore messageStore) {
 		this.messageStore = messageStore;
+	}
+	
+	/**
+	 * Sets the UserStore used by this servlet. This function provides a common setup method for use
+	 * by the test framework or the servlet's init() function.
+	 */
+	void setUserStore(UserStore userStore) {
+		this.userStore = userStore;
+	}
+	
+	/**
+	 * Sets the MentionsStore used by this servlet. This function provides a common setup method
+	 * for use by the test framework or the servlet's init() function.
+	 */
+	void setMentionStore(MentionStore mentionStore) {
+		this.mentionStore = mentionStore;
 	}
 
 	@Override
@@ -137,6 +137,10 @@ public class ActivityServlet extends HttpServlet {
 	    		if(b instanceof Mention) { bTime = ((Mention)b).getCreationTime(); }
 	    		return bTime.compareTo(aTime);});
 		request.setAttribute("data", data);
+		request.setAttribute("conversationStore", conversationStore);
+		request.setAttribute("messageStore", messageStore);
+		request.setAttribute("userStore", userStore);
+		request.setAttribute("mentionStore", mentionStore);
 		request.getRequestDispatcher("/WEB-INF/view/activity.jsp").forward(request, response);
 	}
 }
