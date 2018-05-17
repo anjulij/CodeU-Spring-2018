@@ -15,10 +15,13 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -58,6 +61,10 @@ public class MessageStore {
 
   /** The in-memory list of Messages. */
   private List<Message> messages;
+  
+  public ImmutableList<Message> getAllMessges() {
+	    return ImmutableList.<Message>copyOf(this.messages);
+  }
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private MessageStore(PersistentStorageAgent persistentStorageAgent) {
