@@ -21,6 +21,7 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.MentionParser;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.time.Instant;
 import java.util.*;
 import javax.servlet.ServletException;
@@ -99,7 +100,7 @@ public class ChatServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
-    String conversationTitle = requestUrl.substring("/chat/".length());
+    String conversationTitle = URLDecoder.decode(requestUrl.substring("/chat/".length()), "UTF-8");
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
     if (conversation == null) {
