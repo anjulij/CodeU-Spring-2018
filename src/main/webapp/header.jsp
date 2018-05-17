@@ -26,12 +26,16 @@
     
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <a href="/activity">Activity</a> 
+      <a href="/conversations">Conversations</a> 
+      <a href="/about.jsp">About</a>
+      <a href="/logout">Logout</a>
     <% } else{ %>
       <a href="/login">Login</a>
+      <a href="/activity">Activity</a> 
+      <a href="/conversations">Conversations</a> 
+      <a href="/about.jsp">About</a>
     <% } %>
-    <a href="/activity">Activity</a> 
-    <a href="/conversations">Conversations</a> 
-    <a href="/about.jsp">About</a>
     <!-- <a href="/testdata">Test Data</a> -->
   </nav>
 </body>

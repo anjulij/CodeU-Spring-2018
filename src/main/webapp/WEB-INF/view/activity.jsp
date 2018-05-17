@@ -74,18 +74,20 @@
                to the chat with a title, and the message content*/
     	    else if (obj instanceof Message){
               Message message = (Message) obj; 
-    	      Conversation conversation = conversationStore.getConversationWithId
-    	    		(message.getConversationId());
-            %>
-  	          <li>
-  	            <%= formatter.format(message.getCreationTime()) %>:
-                <%= userStore.getUser(message.getAuthorId()).getName() %> 
-                sent a message in 
-                <a href="/chat/<%= conversation.getTitle() %>">
-                <%= conversation.getTitle() %></a>:
-                <%= message.getContent() %>     
-  	          </li>
-  	        <%
+              if (!message.containsMention()){
+    	        Conversation conversation = conversationStore.getConversationWithId
+    	    	    (message.getConversationId());
+              %>
+  	            <li>
+  	              <%= formatter.format(message.getCreationTime()) %>:
+                  <%= userStore.getUser(message.getAuthorId()).getName() %> 
+                  sent a message in 
+                  <a href="/chat/<%= conversation.getTitle() %>">
+                  <%= conversation.getTitle() %></a>:
+                  <%= message.getContent() %>     
+  	            </li>
+  	          <%
+              }  
     	    }
             /* Object is a User, so display the creation time and the name of the User */
     	    else if (obj instanceof User){

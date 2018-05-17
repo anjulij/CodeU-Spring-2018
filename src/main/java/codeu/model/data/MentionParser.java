@@ -10,8 +10,8 @@ public class MentionParser {
     private UserStore userStore;
 
     private MentionParser(Message message, UserStore userStore) {
-        message = this.message;
-        userStore = this.userStore;
+        this.message = message;
+        this.userStore = userStore;
     }
 
     public static MentionParser createParser(Message message, UserStore userStore){
@@ -38,7 +38,7 @@ public class MentionParser {
                     startOfMention = i;
                 }
             } 
-            else if(content.charAt(i) == ' '){
+            else if(content.charAt(i) == ' ' || i == content.length() - 1){
                     if(inMention){
                         endOfMention = i;
                         mention = getMention(startOfMention, endOfMention, message);
@@ -60,14 +60,16 @@ public class MentionParser {
         Mention mention = null;
 
         for (int i = s; i < end; i++) {
-            sb.append(content.charAt(i));
+        	if (content.charAt(i) != '@')
+              sb.append(content.charAt(i));
         }
 
         String userNameMentioned = sb.toString();
+        System.out.println(userNameMentioned);
         User userMentioned = userStore.getUser(userNameMentioned);
-        UUID userMentionedID = userMentioned.getId();
-
-        if((userMentionedID != null)){
+       
+        if((userMentioned != null)){
+        	UUID userMentionedID = userMentioned.getId();
             mention = new Mention(
                     UUID.randomUUID(),
                     userMentionedID,

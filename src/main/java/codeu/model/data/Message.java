@@ -25,6 +25,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private boolean containsMention;
   /**
    * Constructs a new Message.
    *
@@ -40,6 +41,7 @@ public class Message {
     this.author = author;
     this.content = content;
     this.creation = creation;
+    this.containsMention = false;
   }
   /** Returns the ID of this Message. */
   public UUID getId() {
@@ -65,4 +67,16 @@ public class Message {
   public Instant getCreationTime() {
     return creation;
   }
+  
+  /** Returns true if this message contains a Mention.
+   *  And false otherwise  */
+  public boolean containsMention() {
+    return containsMention;
+  }
+  
+  /** Sets the message to contain a Mention*/
+  public void setMessageToContainMention() {
+	containsMention = true;
+  }
+  
 }
