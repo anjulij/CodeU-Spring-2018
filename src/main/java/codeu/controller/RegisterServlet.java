@@ -1,4 +1,3 @@
-/*AnjuliJ*/
 package codeu.controller;
 
 import codeu.model.data.User;
