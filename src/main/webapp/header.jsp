@@ -22,7 +22,7 @@
 </head>
 <body>
   <nav>
-    <a id="navTitle" href="/">The Unnamed Ones&#39; CodeU Chat App</a>
+    <a id="navTitle" href="/">The Unnamed Ones&#39; Chat App</a>
     
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
