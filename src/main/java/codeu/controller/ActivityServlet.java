@@ -105,7 +105,7 @@ public class ActivityServlet extends HttpServlet {
 		List<Message> messages = 
 				new ArrayList<Message>(messageStore.getAllMessges());
 
-	    /* Get the current user */
+	  /* Get the current user */
 		String username = (String) request.getSession().getAttribute("user");
 
 		List<Mention> allMentions = new ArrayList<Mention>();
@@ -126,7 +126,8 @@ public class ActivityServlet extends HttpServlet {
 		data.addAll(messages);
 		data.addAll(allMentions);
 		data.addAll(users);
-	    Collections.sort(data, (a, b) -> { Instant aTime = Instant.now(); Instant bTime = Instant.now(); 
+
+	  Collections.sort(data, (a, b) -> { Instant aTime = Instant.now(); Instant bTime = Instant.now(); 
 	    		if(a instanceof Conversation) { aTime = ((Conversation)a).getCreationTime(); }
 	    		if(a instanceof Message) { aTime = ((Message)a).getCreationTime(); }
 	    		if(a instanceof User) { aTime = ((User)a).getCreationTime(); }

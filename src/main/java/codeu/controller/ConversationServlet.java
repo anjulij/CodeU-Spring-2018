@@ -108,6 +108,14 @@ public class ConversationServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
       return;
     }
+    
+    if (conversationTitle.equals("")) {
+        request.setAttribute("error2", "A conversation must have a title.");
+        List<Conversation> conversations = conversationStore.getAllConversations();
+        request.setAttribute("conversations", conversations);
+        request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+        return;
+      }
 
     if(!conversationTitle.matches(".*\\w.*")){
       //conversation title only has white spaces
