@@ -31,7 +31,8 @@
           messages sent in conversations and @Mentions in conversations. </li>
       <li>@Mentions: Once a user is mentioned, they will be able to see it in the 
           activity page. Also, the user who did the mentioning will the see it on the 
-          activity page but other users will not be able to see the mention. (currently being fixed)</li>
+          activity page but other users will not be able to see the mention. Mention must
+          contain the other user name as it appears on screen and message must be followed by a space.</li>
     </ul>
     <h2>Improvements:</h2>
     <ul>

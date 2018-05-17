@@ -173,6 +173,8 @@ public class ChatServlet extends HttpServlet {
     	MentionParser mentionParser = MentionParser.createParser(message, userStore);
     	List<Mention> mentions = mentionParser.getMentions();
     	for (Mention mention : mentions) {
+    		Message currMessage = messageStore.getMessageWithId(mention.getMessageId());
+    		currMessage.setMessageToContainMention();
     		mentionStore.addMention(mention);
     	}
     }

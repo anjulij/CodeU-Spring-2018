@@ -25,6 +25,16 @@
   <listener>
     <listener-class>codeu.controller.ServerStartupListener</listener-class>
   </listener>
+  
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>codeu.controller.LogoutServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
