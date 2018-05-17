@@ -109,7 +109,7 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
-    if(conversationTitle.trim().length() <= 0){
+    if(!conversationTitle.matches(".*\\w.*")){
       //conversation title only has white spaces
       request.setAttribute("error2", "A conversation must contain at least one letter or number");
       List<Conversation> conversations = conversationStore.getAllConversations();
