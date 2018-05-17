@@ -47,6 +47,24 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
+    if(!password.matches(".{8,}")){
+      //password must have at least 8 places
+      request.setAttribute("error", "A password must have at least 8 places");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!password.matches(".*[0-9]")){
+      //password must have at least one number
+      request.setAttribute("error", "A password must have at least one number");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!password.matches(".*[A-Z]")){
+      //password must contain at least one capital letter
+      request.setAttribute("error", "A password must contain at least one capital letter");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
 
     /*Checks if username is valid*/
     if (!username.matches("[\\w*\\s*]*")) {
