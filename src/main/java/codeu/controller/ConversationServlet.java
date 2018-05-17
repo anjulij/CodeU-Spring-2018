@@ -101,16 +101,28 @@ public class ConversationServlet extends HttpServlet {
     }
 
     String conversationTitle = request.getParameter("conversationTitle");
-    if (!conversationTitle.matches("[\\w\\s\'*]*")) {
+    if (!conversationTitle.matches("[\\w\\s\'\"*]*")) {
       request.setAttribute("error", "Please enter only letters and numbers.");
+      List<Conversation> conversations = conversationStore.getAllConversations();
+      request.setAttribute("conversations", conversations);
       request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
       return;
     }
+    
+    if (conversationTitle.equals("")) {
+        request.setAttribute("error2", "A conversation must have a title.");
+        List<Conversation> conversations = conversationStore.getAllConversations();
+        request.setAttribute("conversations", conversations);
+        request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+        return;
+      }
 
     if (conversationStore.isTitleTaken(conversationTitle)) {
-      // conversation title is already taken, just go into that conversation instead of creating a
-      // new one
-      response.sendRedirect("/chat/" + conversationTitle);
+      // conversation title is already taken, 
+      request.setAttribute("error2", "This conversation title is taken already. Please enter a different title");
+      List<Conversation> conversations = conversationStore.getAllConversations();
+      request.setAttribute("conversations", conversations);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
       return;
     }
 

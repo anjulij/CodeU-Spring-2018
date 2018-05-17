@@ -23,11 +23,14 @@
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>
-        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+        <h2 style="color:#D79922"><%= request.getAttribute("error") %></h2>
     <% } %>
-
+    
     <% if(request.getSession().getAttribute("user") != null){ %>
       <h1>New Conversation</h1>
+      <% if(request.getAttribute("error2") != null){ %>
+        <h2 style="color:#D79922"><%= request.getAttribute("error2") %></h2>
+       <% } %>
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
@@ -42,7 +45,7 @@
         (List<Conversation>) request.getAttribute("conversations");
       if(conversations == null || conversations.isEmpty()){
     %>
-     <p>Create a conversation to get started.</p>
+     <p>Create a conversation to begin chatting!</p>
     <%
       }
       else{
