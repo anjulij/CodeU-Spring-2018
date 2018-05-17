@@ -86,7 +86,6 @@ public class LoginServlet extends HttpServlet {
       User user = userStore.getUser(username);
 
       // User has entered the correct password.
-      // TODO(someone): add encryption to this, because this is terrible.
       if (BCrypt.checkpw(password, user.getPassword())) {
         if (user.isBlocked()) {
           setErrorAndRedirect(request, response, "You have been blocked. Bummer.");

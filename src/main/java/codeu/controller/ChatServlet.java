@@ -16,6 +16,7 @@ package codeu.controller;
 
 import codeu.model.data.*;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MentionStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.MentionParser;
@@ -43,6 +44,10 @@ public class ChatServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+  
+  /** Store class that gives access to Users. */
+  private MentionStore mentionStore;
+ 
 
   /** Set up state for handling chat requests. */
   @Override
@@ -51,6 +56,7 @@ public class ChatServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
+    setMentionStore(MentionStore.getInstance());
   }
 
   /**
@@ -75,6 +81,14 @@ public class ChatServlet extends HttpServlet {
    */
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
+  }
+  
+  /**
+   * Sets the MentionStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
+   */
+  void setMentionStore(MentionStore mentionStore) {
+    this.mentionStore =  mentionStore;
   }
 
   /**
@@ -155,10 +169,18 @@ public class ChatServlet extends HttpServlet {
 
     messageStore.addMessage(message);
 
+    //Get mentions in an individual single message
+    if (cleanedMessageContent.contains("@")) {
+    	MentionParser mentionParser = MentionParser.createParser(message, userStore);
+    	List<Mention> mentions = mentionParser.getMentions();
+    	for (Mention mention : mentions) {
+    		mentionStore.addMention(mention);
+    	}
+    }
+    
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
 
-    //Get mentions in an individual single message
-    MentionParser mentionList = MentionParser.createParser(message, userStore);
+    
   }
 }

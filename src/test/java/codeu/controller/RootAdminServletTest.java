@@ -34,6 +34,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.google.common.collect.ImmutableList;
+
 public class RootAdminServletTest {
 
   private RootAdminServlet adminServlet;
@@ -63,7 +65,8 @@ public class RootAdminServletTest {
     List<Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
-    when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+    ImmutableList <Conversation> fakeConversationImList = ImmutableList.<Conversation>copyOf(fakeConversationList);
+    when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationImList);
     when(mockSession.getAttribute("user")).thenReturn("admin");
 
     adminServlet.doGet(mockRequest, mockResponse);

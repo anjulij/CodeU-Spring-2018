@@ -23,11 +23,14 @@
   <div id="container">
 
     <% if(request.getAttribute("error") != null){ %>
-        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+        <h2 style="color:#D79922"><%= request.getAttribute("error") %></h2>
     <% } %>
-
+    
     <% if(request.getSession().getAttribute("user") != null){ %>
       <h1>New Conversation</h1>
+      <% if(request.getAttribute("error2") != null){ %>
+        <h2 style="color:#D79922"><%= request.getAttribute("error2") %></h2>
+       <% } %>
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
@@ -36,28 +39,23 @@
 
         <button type="submit">Create</button>
       </form>
-
       <hr/>
-    <% } %>
-
-    <h1>Conversations</h1>
-
-    <%
-    List<Conversation> conversations =
-      (List<Conversation>) request.getAttribute("conversations");
-    if(conversations == null || conversations.isEmpty()){
+      <h1>Conversations</h1>
+    <% List<Conversation> conversations =
+        (List<Conversation>) request.getAttribute("conversations");
+      if(conversations == null || conversations.isEmpty()){
     %>
-      <p>Create a conversation to get started.</p>
+     <p>Create a conversation to begin chatting!</p>
     <%
-    }
-    else{
+      }
+      else{
     %>
-      <ul class="mdl-list">
+     <ul class="mdl-list">
     <%
       for(Conversation conversation : conversations){
     %>
-      <li><a href="/chat/<%= conversation.getTitle() %>">
-        <%= conversation.getTitle() %></a></li>
+     <li><a href="/chat/<%= conversation.getTitle() %>">
+      <%= conversation.getTitle() %></a></li>
     <%
       }
     %>
@@ -66,6 +64,13 @@
     }
     %>
     <hr/>
+    <% } else {
+    %> 
+       <h1>Conversations</h1> 
+       <p><a href="/login">Login</a> to see conversations.</p>
+    <% 
+    }
+    %>
   </div>
 </body>
 </html>

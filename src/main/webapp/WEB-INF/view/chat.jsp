@@ -55,7 +55,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <a href="/activity">Activity</a> 
     <a href="/conversations">Conversations</a> 
     <a href="/about.jsp">About</a>
-    <a href="/testdata">Test Data</a>
+   <!--  <a href="/testdata">Test Data</a> -->
   </nav>
   <div id="container">
 
@@ -92,10 +92,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <br/>
         <button type="submit">Send</button>
     </form>
-    <% } else { %>
-      <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
-
     <hr/>
 
   </div>

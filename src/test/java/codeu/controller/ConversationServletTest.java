@@ -34,6 +34,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import com.google.common.collect.ImmutableList;
+
 public class ConversationServletTest {
 
   private ConversationServlet conversationServlet;
@@ -66,10 +68,11 @@ public class ConversationServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-    List<Conversation> fakeConversationList = new ArrayList<>();
+    List <Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
-    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+    ImmutableList <Conversation> fakeConversationImList = ImmutableList.<Conversation>copyOf(fakeConversationList);
+    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationImList);
 
     conversationServlet.doGet(mockRequest, mockResponse);
 
@@ -130,7 +133,9 @@ public class ConversationServletTest {
 
     Mockito.verify(mockConversationStore, Mockito.never())
         .addConversation(Mockito.any(Conversation.class));
-    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+    Mockito.verify(mockRequest).setAttribute("error2", 
+    		"This conversation title is taken already. Please enter a different title");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
   @Test

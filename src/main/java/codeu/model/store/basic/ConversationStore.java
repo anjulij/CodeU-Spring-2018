@@ -15,9 +15,13 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -82,10 +86,10 @@ public class ConversationStore {
   }
 
   /** Access the current set of conversations known to the application. */
-  public List<Conversation> getAllConversations() {
-    return conversations;
+  public ImmutableList<Conversation> getAllConversations() {
+	    return ImmutableList.<Conversation>copyOf(this.conversations);
   }
-
+  
   /** Add a new conversation to the current set of conversations known to the application. */
   public void addConversation(Conversation conversation) {
     Conversation original = getConversationWithTitle(conversation.getTitle());
@@ -115,6 +119,16 @@ public class ConversationStore {
       }
     }
     return null;
+  }
+  
+  /** Find and return the Conversation with the given id. */
+  public Conversation getConversationWithId(UUID id) {
+	for (Conversation conversation : conversations) {
+      if (conversation.getId().equals(id)) {
+    	  return conversation;
+      }
+	}
+	return null;
   }
 
   /** Sets the List of Conversations stored by this ConversationStore. */
