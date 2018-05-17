@@ -1,4 +1,3 @@
-/*AnjuliJ*/
 package codeu.controller;
 
 import codeu.model.data.User;
@@ -40,13 +39,44 @@ public class RegisterServlet extends HttpServlet {
     String password = request.getParameter("password");
     String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
+    /*Checks if password is valid*/
+    if(!password.matches(".*\\w.*")){
+      //password only has white space
+      request.setAttribute("error", "A password must contain at least one letter or number");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!password.matches(".{8,}")){
+      //password must have at least 8 places
+      request.setAttribute("error", "A password must have at least 8 places");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!password.matches(".*[0-9]")){
+      //password must have at least one number
+      request.setAttribute("error", "A password must have at least one number");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!password.matches(".*[A-Z]")){
+      //password must contain at least one capital letter
+      request.setAttribute("error", "A password must contain at least one capital letter");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
     /*Checks if username is valid*/
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-
+    if(!username.matches(".*\\w.*")){
+      //username only has white spaces
+      request.setAttribute("error", "A username must contain at least one letter or number");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
     /*Checks if username has already been used*/
     if (userStore.isUserRegistered(username)) {
       request.setAttribute("error", "That username is already taken.");

@@ -117,6 +117,24 @@ public class ConversationServlet extends HttpServlet {
         return;
       }
 
+    if(!conversationTitle.matches(".*\\w.*")){
+      //conversation title only has white spaces
+      request.setAttribute("error2", "A conversation must contain at least one letter or number");
+      List<Conversation> conversations = conversationStore.getAllConversations();
+      request.setAttribute("conversations", conversations);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+      return;
+    }
+    
+    if (conversationTitle.equals("")) {
+        //conversation is blank
+        request.setAttribute("error2", "A conversation must have a title.");
+        List<Conversation> conversations = conversationStore.getAllConversations();
+        request.setAttribute("conversations", conversations);
+        request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+        return;
+      }
+
     if (conversationStore.isTitleTaken(conversationTitle)) {
       // conversation title is already taken, 
       request.setAttribute("error2", "This conversation title is taken already. Please enter a different title");
