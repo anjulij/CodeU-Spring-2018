@@ -37,9 +37,27 @@ public class RegisterServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
-    /*Checks if password is valid*/
+    /**Checks if username is valid*/
+    if (!username.matches("[\\w*\\s*]*")) {
+      request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if(!username.matches(".*\\w.*")){
+      //username only has white spaces
+      request.setAttribute("error", "A username must contain at least one letter or number");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+    if (userStore.isUserRegistered(username)) {
+      //username already exists
+      request.setAttribute("error", "That username is already taken.");
+      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
+      return;
+    }
+
+      /**Checks if password is valid*/
     if(!password.matches(".*\\w.*")){
       //password only has white space
       request.setAttribute("error", "A password must contain at least one letter or number");
@@ -52,39 +70,29 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-    if(!password.matches(".*[0-9]")){
+    if(!password.matches(".*[0-9].*")){
       //password must have at least one number
       request.setAttribute("error", "A password must have at least one number");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-    if(!password.matches(".*[A-Z]")){
+    if(!password.matches(".*[A-Z].*")){
       //password must contain at least one capital letter
       request.setAttribute("error", "A password must contain at least one capital letter");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-
-    /*Checks if username is valid*/
-    if (!username.matches("[\\w*\\s*]*")) {
-      request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
-      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
-      return;
-    }
-    if(!username.matches(".*\\w.*")){
-      //username only has white spaces
-      request.setAttribute("error", "A username must contain at least one letter or number");
-      request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
-      return;
-    }
-    /*Checks if username has already been used*/
-    if (userStore.isUserRegistered(username)) {
-      request.setAttribute("error", "That username is already taken.");
+    if(!password.matches(".*[a-z].*")){
+      //password must contain at least one lowercase letter
+      request.setAttribute("error", "A password must contain at least one lowercase letter");
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
 
-    /*Adds user to userStore*/
+    /**Encrypts Password*/
+    String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+
+    /**Adds user to userStore*/
     User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
     userStore.addUser(user);
 

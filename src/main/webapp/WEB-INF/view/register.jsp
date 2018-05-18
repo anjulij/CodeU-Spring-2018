@@ -37,7 +37,7 @@
         <h1>Register</h1>
 
         <% if (request.getAttribute("error") != null){ %>
-            <h2 style="color:red"><%=
+            <h2 style="color:#D79922"><%=
                 request.getAttribute("error") %></h2>
 
         <% } %>
